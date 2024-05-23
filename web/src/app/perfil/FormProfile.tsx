@@ -28,7 +28,7 @@ interface FormProfileProps {
 const formSchema = z.object({
   name: z.string(),
   contact: z.string(),
-  address: z.string().max(8, "Informe apenas números"),
+  address: z.string(),
 });
 
 type FormTypes = z.infer<typeof formSchema>;
@@ -126,12 +126,10 @@ export function FormProfile({ userId }: FormProfileProps) {
               />
 
               <input
-                maxLength={8}
-                type="number"
                 className="input"
                 {...register("address")}
                 defaultValue={user.address}
-                placeholder="Informe seu CEP"
+                placeholder="Informe seu endereço"
               />
 
               <Button className="w-full button">
