@@ -1,0 +1,38 @@
+{
+  "name": "api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "engines": {
+    "node": "20"
+  },
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "test": "vitest",
+    "build": "tsup src",
+    "start": "node dist/server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
+    "@types/node": "^20.12.11",
+    "prisma": "^5.14.0",
+    "tsup": "^8.0.2",
+    "tsx": "^4.10.2",
+    "typescript": "^5.4.5",
+    "vitest": "^1.6.0"
+  },
+  "dependencies": {
+    "@fastify/cors": "^9.0.1",
+    "@prisma/client": "^5.14.0",
+    "@types/jsonwebtoken": "^9.0.6",
+    "bcrypt": "^5.1.1",
+    "bson": "^6.7.0",
+    "dotenv": "^16.4.5",
+    "fastify": "^4.27.0",
+    "jsonwebtoken": "^9.0.2",
+    "zod": "^3.23.8"
+  }
+}
