@@ -7,7 +7,7 @@ import { Cause } from "@/types/cause";
 import { Button } from "./ui/button";
 import { useEffect, useState } from "react";
 import { ChevronRight, Plus, Search } from "lucide-react";
-import { Skeleton } from "./ui/skeleton";
+import { Loading } from "./Loading";
 
 export function ListAllCauses() {
 
@@ -117,8 +117,8 @@ export function ListAllCauses() {
           </>
         ) : (
           <div className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-5">
-            <Skeleton className="h-80 bg-zinc-200 rounded-md"/>
-            <Skeleton className="h-80 bg-zinc-200 rounded-md"/>
+            <Loading/>
+            <Loading/>
           </div>
         )}
       </div>

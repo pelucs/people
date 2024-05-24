@@ -2,16 +2,16 @@
 
 import { api } from "@/api/axios";
 import { ptBR } from "date-fns/locale";
-import { Eye, Plus } from "lucide-react";
 import { Cause } from "@/types/cause";
 import { format } from "date-fns";
 import { Button } from "@/components/ui/button";
+import { Loading } from "@/components/Loading";
+import { Eye, Plus } from "lucide-react";
 import { UpdateCauseDialog } from "./UpdateCauseDialog";
 import { DeleteCauseDialog } from "./DeleteCauseDialog";
 import { useEffect, useState } from "react";
 
 import Link from "next/link";
-import { Skeleton } from "@/components/ui/skeleton";
 
 interface ListCausesProps {
   userId: string;
@@ -124,8 +124,8 @@ export function ListCausesByUser({ userId }: ListCausesProps) {
         </>
       ) : (
         <div className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-5">
-          <Skeleton className="h-80 bg-zinc-200 rounded-md"/>
-          <Skeleton className="h-80 bg-zinc-200 rounded-md"/>
+          <Loading/>
+          <Loading/>
         </div>
       )}
     </div>

@@ -139,17 +139,21 @@ export function FormProfile({ userId }: FormProfileProps) {
           </form>
         </div>
       ) : (
-        <div className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-3">
-          <div className="w-full flex flex-col gap-3">
-            <Skeleton className="h-14 bg-background"/>
-            <Skeleton className="h-14 bg-background"/>
-            <Skeleton className="h-14 bg-background"/>
-          </div>
+        <div className="mt-1">
+          <Skeleton className="w-40 h-6 bg-background"/>
 
-          <div className="w-full h-fit flex flex-col gap-3">
-            <Skeleton className="h-14 bg-background"/>
-            <Skeleton className="h-14 bg-background"/>
-            <Skeleton className="h-14 bg-background"/>
+          <div className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div className="w-full flex flex-col gap-3">
+              <Skeleton className="h-14 bg-background"/>
+              <Skeleton className="h-14 bg-background"/>
+              <Skeleton className="h-14 bg-background"/>
+            </div>
+
+            <div className="w-full h-fit flex flex-col gap-3">
+              <Skeleton className="h-14 bg-background"/>
+              <Skeleton className="h-14 bg-background"/>
+              <Skeleton className="h-14 bg-background"/>
+            </div>
           </div>
         </div>
       )}
