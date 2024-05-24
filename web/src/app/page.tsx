@@ -10,10 +10,6 @@ import bg from "../assets/bg.jpg";
 import Link from "next/link";
 
 export default async () => {
-
-  const response = await api.get("/causes");
-  const causes: Cause[] = response.data;
-
   return(
     <div className="w-full px-5 md:px-0 max-w-[1120px] mx-auto">
       <Header/>
@@ -59,7 +55,7 @@ export default async () => {
         </div>
 
         <div className="mt-20">
-          <ListAllCauses causes={causes}/>
+          <ListAllCauses/>
         </div>
       </div>
 

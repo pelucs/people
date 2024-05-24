@@ -7,6 +7,8 @@ import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import clsx from "clsx";
 
 interface CreateCauseFormProps {
   userId: string;
@@ -23,6 +25,8 @@ const formSchema = z.object({
 type FormTypes = z.infer<typeof formSchema>;
 
 export function CreateCauseForm({ userId }: CreateCauseFormProps) {
+
+  const [maxLengthDescription, setMaxLengthDescription] = useState<string>("");
 
   const navigation = useRouter();
 
@@ -51,7 +55,7 @@ export function CreateCauseForm({ userId }: CreateCauseFormProps) {
     .catch(err => {
       toast({
         title: err.message
-      })
+      });
     })
   }
 
@@ -132,13 +136,21 @@ export function CreateCauseForm({ userId }: CreateCauseFormProps) {
               Descrição
             </label>
 
-            <span className="text-xs text-muted-foreground">0/500</span>
+            <span 
+              className={clsx("text-xs text-muted-foreground", {
+                "text-yellow-500": maxLengthDescription.length >= 450 && maxLengthDescription.length < 480,
+                "text-red-500": maxLengthDescription.length >= 480,
+              })}
+            >
+              {maxLengthDescription.length}/500
+            </span>
           </div>
 
           <textarea 
             id="title"
             maxLength={500}
             {...register("description")}
+            onChange={e => setMaxLengthDescription(e.target.value)}
             placeholder="Escreva uma descrição"
             className="h-60 py-4 px-5 rounded-md border"
           ></textarea>

@@ -18,6 +18,8 @@ import {
   DialogOverlay,
   DialogClose,
 } from "@/components/ui/dialog";
+import { useState } from "react";
+import clsx from "clsx";
 
 interface UpdateCauseDialogProps {
   cause: Cause;
@@ -34,6 +36,8 @@ const formSchema = z.object({
 type FormTypes = z.infer<typeof formSchema>;
 
 export function UpdateCauseDialog({ cause }: UpdateCauseDialogProps) {
+
+  const [maxLengthDescription, setMaxLengthDescription] = useState<string>(cause.description);
 
   const navigation = useRouter();
 
@@ -118,13 +122,25 @@ export function UpdateCauseDialog({ cause }: UpdateCauseDialogProps) {
                 />
               </div>
 
-              <textarea 
-                maxLength={500}
-                {...register("description")}
-                defaultValue={cause.description}
-                placeholder="Escreva uma descrição"
-                className="h-40 py-4 px-5 rounded-md border resize-none"
-              ></textarea>
+              <div className="flex flex-col gap-2">
+                <span 
+                  className={clsx("text-xs text-muted-foreground", {
+                    "text-yellow-500": maxLengthDescription.length >= 450 && maxLengthDescription.length < 480,
+                    "text-red-500": maxLengthDescription.length >= 480,
+                  })}
+                >
+                  {maxLengthDescription.length}/500
+                </span>
+
+                <textarea 
+                  maxLength={500}
+                  {...register("description")}
+                  defaultValue={cause.description}
+                  onChange={e => setMaxLengthDescription(e.target.value)}
+                  placeholder="Escreva uma descrição"
+                  className="h-40 py-4 px-5 rounded-md border resize-none"
+                ></textarea>
+              </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <Button type="submit" className="w-full button">
