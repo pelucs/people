@@ -4,11 +4,11 @@ export function Footer(){
       Desenvolvido por 
       
       <a 
-        href="https://instagram.com/pdlucs" 
+        href="https://github.com/pelucs" 
         target="_blank"
         className="underline ml-1"
       >
-        @pdlucs
+        @pelucs
       </a>
     </p>
   );
