@@ -39,7 +39,7 @@ export function ListAllCauses() {
     <div id="causas" className="mt-5">  
       <div className="flex flex-col md:flex-row items-start md:items-end md:justify-between">
         <div>
-          <h1 className="text-2xl font-bold leading-none">
+          <h1 className="text-2xl font-alt">
             Causas cadastradas
           </h1>
 

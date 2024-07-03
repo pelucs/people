@@ -23,18 +23,14 @@ export function Header(){
           />
         </Link>
 
-        <nav className="flex items-center gap-4 text-sm font-semibold text-muted-foreground">
+        <nav className=" hidden md:flex items-center gap-4 text-sm font-semibold text-muted-foreground">
           <Link href="/" className="hover:text-foreground transition-colors">
             Causas
           </Link>
 
-          <a 
-            href="/causas" 
-            target="_blank"
-            className="hidden md:block hover:text-foreground transition-colors"
-          >
-            Rede social
-          </a>
+          <Link href="#sobre-nos" className="hover:text-foreground transition-colors">
+            Sobre nós
+          </Link>
         </nav>
       </div>
 

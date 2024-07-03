@@ -1,10 +1,11 @@
-import { Inter } from "next/font/google";
+import { Inter, Anek_Gujarati } from "next/font/google";
 import { Toaster } from "@/components/ui/toaster";
 import type { Metadata } from "next";
 import "./globals.css";
 import { SOS } from "@/components/SOS";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter"});
+const anek = Anek_Gujarati({ subsets: ["latin"], weight: "700", variable: "--font-alt"});
 
 export const metadata: Metadata = {
   title: "People",
@@ -18,7 +19,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-br">
-      <body className={`${inter.className} bg-[#EFF5F5]`}>
+      <body className={`${inter.variable} ${anek.variable} font-sans bg-[#EFF5F5]`}>
         <SOS/>
         {children}
         <Toaster />
