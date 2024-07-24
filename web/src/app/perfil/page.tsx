@@ -14,24 +14,19 @@ export default () => {
   }
 
   return(
-    <div className="w-full max-w-[1120px] px-5 md:px-0 mx-auto">
+    <div className="w-full px-20 space-y-10">
       <Header/>
 
-      <div className="min-h-screen mt-10">
-        <div>
-          <BackPage/>
-
-          <h1 className="mt-5 text-2xl font-bold">Meu Perfil</h1>
-
-          <div>
-            <FormProfile userId={user.id}/>
-          </div>
-        </div>
-
+      <div className="min-h-screen space-y-5">
+        <h1 className="text-2xl font-bold">Área admin</h1>
         <ListCausesByUser userId={user.id}/>
       </div>
 
       <Footer/>
     </div>
   );
-}
+}          
+
+{/* <div>
+  <FormProfile userId={user.id}/>
+</div> */}

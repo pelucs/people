@@ -1,49 +1,79 @@
 import bg from "../assets/bg.png";
+import illustration from "../assets/illustration-1.png";
 
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Header } from "@/components/Header";
 import { Separator } from "@/components/ui/separator";
 import { ListAllCauses } from "@/components/ListAllCauses";
-import { HeartHandshake, ShieldCheck, ThumbsUp } from "lucide-react";
+import { ChevronsDown, HeartHandshake, Instagram, Phone, ShieldCheck, ThumbsUp } from "lucide-react";
 
 import Image from "next/image";
 import Link from "next/link";
 
 export default async () => {
   return(
-    <div className="w-full px-5 md:px-0 max-w-[1120px] mx-auto">
-      <Header/>
+    <div className="w-full">
+      <div className="px-20">
+        <Header/>
+      </div>
+      
+      <Link 
+        href="" 
+        className="w-full h-10 flex items-center justify-center gap-1 bg-gradient-to-l text-white 
+        to-green-500 from-orange-500"
+      >
+        Conheça mais sobre o departamento Socioambiental
 
-      <div className="mt-10 md:mt-20 space-y-16">
-        <div className="flex flex-col items-center justify-center">
-          <h1 className="max-w-[650px] text-4xl md:text-6xl text-center font-alt leading-none">
-            Juntos Transformamos
-            Vidas com <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-orange-600">Generosidade</span>
-          </h1>
+        <ChevronsDown className="size-4 animate-bounce"/>
+      </Link>
 
-          <span className="text-muted-foreground">
-            A plataforma com 100% das causas verídicas
-          </span>
+      <div className="mt-10 md:mt-20 px-20 space-y-16">
+        <div className=" grid grid-cols-2 gap-10">
+          <div className="flex flex-col items-start justify-center gap-8">
+            <div>
+              <h1 className="text-5xl md:text-6xl font-alt leading-none">
+                Solidariedade, cuidado e voluntariado
+              </h1>
 
-          <div className="mt-10 flex items-center gap-5">
-            <Button 
-              asChild 
-              className="w-[140px] flex gap-1 bg-green-500 hover:bg-green-600"
-            >
-              <Link href="/login">               
-                Criar uma causa
-              </Link>
-            </Button>
+              <span className="text-muted-foreground">
+                Conectando corações generosos àqueles que mais precisam, criando uma rede de apoio e 
+                solidariedade através do voluntariado.
+              </span>
+            </div>
 
-            <Button 
-              asChild
-              className="w-[140px]"
-            >
-              <Link href="#sobre-nos">               
-                Sobre nós
-              </Link>
-            </Button>
+            <div className="flex items-center gap-5">
+              <Button 
+                asChild 
+                className="flex gap-1 bg-green-500 hover:bg-green-600"
+              >
+                <Link href="/login">               
+                  Seja herói de uma causa
+                </Link>
+              </Button>
+
+              <div className="flex items-center gap-2">
+                <Button asChild size="icon">
+                  <a target="_blank" href="https://wa.me/5583986600008">
+                    <Phone className="size-4"/>
+                  </a>
+                </Button>
+
+                <Button asChild size="icon">
+                  <a target="_blank" href="https://www.instagram.com/socioambiental_cg/">
+                    <Instagram className="size-4"/>
+                  </a>
+                </Button>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex items-center justify-center">
+            <Image 
+              alt="" 
+              src={illustration}
+              className=""
+            />
           </div>
         </div>
 
@@ -52,10 +82,17 @@ export default async () => {
         <div id="sobre-nos" className="py-5 grid grid-cols-1 md:grid-cols-2 gap-10">
           <div>
             <h1 className="font-alt text-2xl md:text-4xl">Quem somos?</h1>
-            <p>
-              People é uma plataforma desenvolvida com a missão de conectar corações generosos a quem mais 
-              precisa. O sistema permite o cadastro de causas carentes, tornando-as visíveis para doadores 
-              em potencial, facilitando a contribuição e o apoio a essas causas.
+
+            <p className="text-muted-foreground">
+              Socioambiental é um departamento da Assembleia de Deus Vitória em Cristo, localizado na sede no 
+              Rio de Janeiro, que se dedica à solidariedade, ao voluntariado e à disseminação da palavra de 
+              Deus, refletidos em nossos atendimentos e acolhimentos aos mais necessitados.
+              <br/>
+              <br/>
+              Essa plataforma é uma extensão de nossos esforços para expandir o alcance dos atendimentos na 
+              região da Paraíba, uma iniciativa que teve origem na filial da ADVEC em Campina Grande. 
+              Nossa missão é conectar corações generosos àqueles que mais precisam, proporcionando suporte 
+              e esperança por meio de uma rede de apoio eficaz e compassiva.
             </p>
           
             <div className="mt-5 space-y-4">
@@ -96,9 +133,7 @@ export default async () => {
 
         <Separator/>
 
-        <div>
-          <ListAllCauses/>
-        </div>
+        <ListAllCauses/>
       </div>
 
       <Footer/>

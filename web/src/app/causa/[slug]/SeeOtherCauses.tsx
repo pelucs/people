@@ -35,18 +35,19 @@ export function SeeOtherCauses() {
   return(
     <div>
       {causes.length > 0 ? (
-        <div className="mt-16">
+        <div className="space-y-5">
           <h1 className="text-2xl font-bold">
             Veja também
           </h1>
         
-          <div className="mt-5 grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {causes ? (
               causes.slice(0,3).map((cause) => (
                 <Link 
                   key={cause.id}
                   href={`/causa/${cause.id}`}
-                  className="py-4 px-5 flex flex-col gap-5 rounded-md border border-transparent transition-colors hover:border-green-500 bg-white"
+                  className="py-4 px-5 flex flex-col gap-5 rounded-md border border-transparent transition-colors
+                   hover:border-green-500 bg-secondary"
                 >
                   <div className="flex flex-col gap-1">
                     <span className="label">Título</span>

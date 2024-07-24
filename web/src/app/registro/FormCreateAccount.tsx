@@ -68,7 +68,7 @@ export function FormCreateAccount(){
   return(
     <form onSubmit={handleSubmit(createUser)} className="w-full max-w-96 mt-4 flex flex-col gap-3">
       <Select onValueChange={setTypeAccount}>
-        <SelectTrigger className="w-full max-w-96 h-14 px-5 text-base">
+        <SelectTrigger className="w-full max-w-96 h-10 px-5">
           <SelectValue placeholder="Selecione o tipo da conta"/>
         </SelectTrigger>
 

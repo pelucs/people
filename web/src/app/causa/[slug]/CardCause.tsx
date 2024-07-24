@@ -56,7 +56,7 @@ export function CardCause() {
     <div>
       {cause ? (
         <div className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-5">
-          <div className="p-5 md:p-8 flex flex-col gap-5 rounded-md bg-white">
+          <div className="p-5 md:p-8 flex flex-col gap-5 rounded-md bg-secondary">
             <div className="flex items-start justify-between">
               <div className="flex flex-col gap-1">
                 <span className="label">ID da causa</span>
@@ -65,12 +65,11 @@ export function CardCause() {
                   <span className="font-medium">{slug}</span>
                   
                   <Button 
-                    size={"icon"} 
-                    title="Copiar id" 
-                    variant={"secondary"} 
+                    size="icon" 
+                    title="Copiar id"
                     disabled={copy}
                     onClick={() => copyId(cause.id)}
-                    className="size-7 hover:text-green-500"
+                    className="size-7 text-black bg-zinc-300"
                   >
                     {copy ? (
                       <Check className="size-4"/>
@@ -114,7 +113,7 @@ export function CardCause() {
             </div>
           </div>
 
-          <div className="h-fit p-5 md:p-8 flex flex-col gap-5 rounded-md bg-white">
+          <div className="h-fit p-5 md:p-8 flex flex-col gap-5 rounded-md bg-secondary">
             <h1 className="font-bold text-xl leading-tight">
               Entre em contato <br/>
               Seja o herói dessa causa!

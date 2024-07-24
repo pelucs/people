@@ -21,7 +21,7 @@ export default () => {
               Crie sua conta, entre na plataforma e seja o herói de alguém!
             </p>
 
-            <Link href="/" className="mt-5 font-semibold hidden md:flex items-center justify-start gap-2">
+            <Link href="/login" className="mt-5 font-semibold hidden md:flex items-center justify-start gap-2">
               <LogIn className="size-4 text-green-500"/>
 
               Já possui uma conta?

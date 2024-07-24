@@ -6,7 +6,7 @@ import { Cause } from "@/types/cause";
 import { format } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { Loading } from "@/components/Loading";
-import { Eye, Plus } from "lucide-react";
+import { Eye, Handshake, Plus } from "lucide-react";
 import { UpdateCauseDialog } from "./UpdateCauseDialog";
 import { DeleteCauseDialog } from "./DeleteCauseDialog";
 import { useEffect, useState } from "react";
@@ -25,7 +25,7 @@ export function ListCausesByUser({ userId }: ListCausesProps) {
   useEffect(() => {
     const getCauses = async () => {
       try {
-        const response = await api.get(`/causes/${userId}`);
+        const response = await api.get(`/causes`);
         setCauses(response.data);
       } catch(err) {
         console.log(err)
@@ -38,17 +38,30 @@ export function ListCausesByUser({ userId }: ListCausesProps) {
   }, []);
 
   return(
-    <div className="w-full mt-16">
-      <h1 className="text-2xl font-bold">Minhas causas</h1>
+    <div className="w-full flex flex-col gap-5">
+      <div className="grid grid-cols-3 gap-5">
+        <div className="w-full py-4 px-5 rounded-md bg-secondary">
+          <div className="flex items-center justify-between">
+            <h1 className="text-sm text-muted-foreground font-medium">Causas registradas</h1>
+            <Handshake className="size-4 text-muted-foreground"/>
+          </div>
+
+          <strong className="text-4xl font-bold">{causes.length}</strong>
+        </div>
+
+        <div className="w-full py-4 px-5 rounded-md bg-secondary"/>
+        <div className="w-full py-4 px-5 rounded-md bg-secondary"/>
+      </div>
 
       {!loading ? (
         <>
           {causes.length > 0 ? (
-            <div className="w-full mt-5 grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-5">
               {causes.map((cause) => (
                 <div 
                   key={cause.id}
-                  className="p-5 md:p-8 flex flex-col gap-5 rounded-md border border-transparent transition-colors hover:border-green-500 bg-white"
+                  className="p-5 md:p-8 flex flex-col gap-5 rounded-md border border-transparent transition-colors
+                   hover:border-green-500 bg-secondary"
                 >
                   <div className="flex items-start justify-between">
                     <div className="flex flex-col gap-1">

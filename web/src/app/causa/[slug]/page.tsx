@@ -7,18 +7,18 @@ import { SeeOtherCauses } from "./SeeOtherCauses";
 export default () => {
 
   return(
-    <div className="w-full px-5 md:px-0 max-w-[1120px] mx-auto">
+    <div className="w-full">
       <Header/>
 
-      <div className="mt-10">
+      <div className="mt-10 px-20 space-y-5">
         <BackPage/>
 
-        <h1 className="mt-5 text-2xl font-bold">Abrace essa causa!</h1>
+        <h1 className="text-2xl font-bold">Abrace essa causa!</h1>
 
         <CardCause/>
+        <SeeOtherCauses/>
       </div>
 
-      <SeeOtherCauses/>
       <Footer/>
     </div>
   );

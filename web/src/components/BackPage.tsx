@@ -11,7 +11,7 @@ export function BackPage(){
   return(
     <Button 
       variant={'ghost'} 
-      className="gap-2 pl-0 text-xl font-semibold"
+      className="gap-2 pl-0 text-xl font-semibold hover:bg-transparent"
       onClick={navigation.back}
     >
       <ArrowLeft className="size-4 text-green-500"/>

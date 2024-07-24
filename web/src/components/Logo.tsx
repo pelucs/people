@@ -1,7 +1,6 @@
 import Image from "next/image";
-
-import logo from '@/assets/logo.svg';
 import Link from "next/link";
+import logo from '@/assets/logotipo-socioambiental.png';
 
 export function Logo(){
   return(
@@ -9,7 +8,7 @@ export function Logo(){
       <Image 
         src={logo}
         alt="Logo BeHero"
-        className="w-52"
+        className="w-40"
       />
     </Link>
   );

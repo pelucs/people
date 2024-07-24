@@ -7,6 +7,7 @@ export function ButtonCreateNewCause() {
     <div>
       <Button 
         asChild 
+        size="sm"
         className="hidden md:flex gap-1 bg-green-500 hover:bg-green-600"
       >
         <Link href="/nova-causa">
@@ -18,6 +19,7 @@ export function ButtonCreateNewCause() {
 
       <Button 
         asChild 
+        size="sm"
         className="md:hidden fixed bottom-5 right-5 size-12 rounded-full bg-green-500 hover:bg-green-600"
       >
         <Link href="/nova-causa">

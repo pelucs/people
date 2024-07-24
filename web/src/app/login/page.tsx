@@ -7,12 +7,12 @@ import illustration from '../../assets/kids.svg';
 import { z } from "zod";
 import { api } from "@/api/axios";
 import { Logo } from "@/components/Logo";
-import { LogIn } from "lucide-react";
+import { toast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
-import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { Eye, LogIn } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { toast } from "@/components/ui/use-toast";
 
 const formSchema = z.object({
   email: z.string().email("Email incorreto."),
@@ -22,6 +22,8 @@ const formSchema = z.object({
 type FormTypes = z.infer<typeof formSchema>;
 
 export default () => {
+
+  const [visiblePassword, setVisiblePassword] = useState<boolean>(false);
 
   const { handleSubmit, register, formState: { errors } } = useForm<FormTypes>({
     resolver: zodResolver(formSchema)
@@ -74,12 +76,22 @@ export default () => {
               </div>
 
               <div className="flex flex-col gap-1">
-                <input
-                  type="password"
-                  className="input"
-                  {...register("password")}
-                  placeholder="Informe sua senha"
-                />
+                <div className="relative">
+                  <input
+                    type="password"
+                    className="w-full pr-6 input"
+                    {...register("password")}
+                    placeholder="Informe sua senha"
+                  />
+
+                  <Button 
+                    size="icon" 
+                    // variant="" 
+                    className="size-6 absolute top-[10px] right-2"
+                  >
+                    <Eye className="size-4"/>
+                  </Button>
+                </div>
                 
                 {errors.password && (
                   <span className="leading-none text-xs text-red-500">
@@ -88,7 +100,7 @@ export default () => {
                 )}
               </div>
 
-              <Button className="button">
+              <Button type="submit" className="button">
                 Efetuar Login
               </Button>
             </form>

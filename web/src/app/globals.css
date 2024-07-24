@@ -46,13 +46,17 @@
   }
   
 .button{
-  @apply w-full max-w-96 h-14 rounded-md bg-green-500 hover:bg-green-600;
+  @apply w-full max-w-96 h-10 rounded-md bg-green-500 hover:bg-green-600;
 }
 
 .input{
-  @apply flex-1 py-4 px-5 rounded-md border bg-white;
+  @apply flex-1 py-2 px-3 rounded-md border bg-white;
 }
 
 .label{
-  @apply text-sm uppercase font-medium text-zinc-400;
+  @apply text-sm font-medium text-zinc-400;
+}
+
+.title {
+  @apply text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-orange-600;
 }

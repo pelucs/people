@@ -8,6 +8,7 @@ import { Button } from "./ui/button";
 import { useEffect, useState } from "react";
 import { ChevronRight, Plus, Search } from "lucide-react";
 import { Loading } from "./Loading";
+import { Separator } from "./ui/separator";
 
 export function ListAllCauses() {
 
@@ -38,14 +39,12 @@ export function ListAllCauses() {
   return(
     <div id="causas" className="mt-5">  
       <div className="flex flex-col md:flex-row items-start md:items-end md:justify-between">
-        <div>
-          <h1 className="text-2xl font-alt">
-            Causas cadastradas
-          </h1>
+        <div className="flex items-center gap-5">
+          <Button className="font-medium text-green-800 bg-green-300">
+            Todas
+          </Button>
 
-          <span className="text-sm text-muted-foreground font-semibold">
-            {causes.length} causas cadastradas
-          </span>
+          <Separator orientation="vertical" className="h-6"/>
         </div>
 
         <div className="mt-3 md:mt-0 rounded-md relative bg-white">
@@ -54,7 +53,7 @@ export function ListAllCauses() {
           <input 
             placeholder="Pesquise aqui"
             onChange={e => setSearch(e.target.value)}
-            className="py-2 pl-8 pr-3 bg-transparent"
+            className="py-2 pl-8 pr-3 bg-secondary rounded-md"
           />
         </div>
       </div>
@@ -68,7 +67,8 @@ export function ListAllCauses() {
                   <Link 
                     key={cause.id}
                     href={`/causa/${cause.id}`} 
-                    className="p-5 md:p-8 flex flex-col gap-5 rounded-md border border-transparent transition-colors hover:border-green-500 bg-white"
+                    className="p-5 md:p-8 flex flex-col gap-5 rounded-md border border-transparent 
+                    transition-colors hover:border-green-500 bg-secondary"
                   >
                     <div className="flex flex-col gap-1">
                       <span className="label">Título</span>
