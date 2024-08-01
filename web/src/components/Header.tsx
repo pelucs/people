@@ -3,12 +3,16 @@ import logo from '@/assets/logotipo-socioambiental.png';
 import Link from "next/link";
 
 import { Button } from "./ui/button";
-import { Search } from "lucide-react";
+import { getUser } from "@/lib/auth";
 import { Separator } from "./ui/separator";
+import { LayoutGrid, LogOut, Search } from "lucide-react";
 
 export function Header(){
+
+  const user = getUser();
+
   return(
-    <div className="flex-1 h-16 flex items-center justify-between border-b">
+    <div className="flex-1 h-16 px-5 md:px-14 flex items-center justify-between border-b">
       <Link href="/">
         <Image 
           src={logo}
@@ -34,9 +38,34 @@ export function Header(){
 
         <Separator orientation="vertical" className="h-6"/>
 
-        <Button size="icon" className="size-8">
-          <Search className="size-4"/>
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button variant="secondary" size="icon" className="size-8">
+            <Search className="size-4"/>
+          </Button>
+
+          {user && (
+            <>
+              <Button asChild size="sm" className="h-8 gap-2">
+                <Link href="/dashboard">
+                  <LayoutGrid className="size-4"/>
+
+                  Dashboard
+                </Link>
+              </Button>
+
+              <Button 
+                asChild 
+                size="icon" 
+                variant="destructive"
+                className="size-8 gap-2"
+              >
+                <Link href="/api/auth/logout">
+                  <LogOut className="size-4"/>
+                </Link>
+              </Button>
+            </>
+          )}
+        </div>
       </div>
     </div>
   );

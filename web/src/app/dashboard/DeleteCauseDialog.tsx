@@ -4,6 +4,7 @@ import { api } from "@/api/axios";
 import { toast } from "@/components/ui/use-toast";
 import { Trash } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 import { 
   Dialog, 
   DialogClose, 
@@ -12,7 +13,6 @@ import {
   DialogPortal, 
   DialogTrigger 
 } from "@/components/ui/dialog";
-import { useRouter } from "next/navigation";
 
 interface DeleteCauseDialog {
   causeId: string;
@@ -40,7 +40,11 @@ export function DeleteCauseDialog({ causeId }: DeleteCauseDialog) {
 
   return(
     <Dialog>
-      <Button asChild size={"icon"} variant={"outline"}>
+      <Button 
+        asChild 
+        size="icon"
+        variant="outline"
+      >
         <DialogTrigger>
           <Trash className="size-4 text-red-500"/>
         </DialogTrigger>

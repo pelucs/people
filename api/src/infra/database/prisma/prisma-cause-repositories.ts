@@ -26,7 +26,10 @@ export class PrismaCauseRepositories implements CauseRepositories {
       }
     });
 
-    return causes.map(cause => PrismaCauseMappers.toDomain(cause));
+    return causes.map(cause => PrismaCauseMappers.toDomain({
+      ...cause,
+      description: cause.description.substring(0, 80).concat("...")
+    }));
   }
 
   // Pegando uma causa específica

@@ -69,7 +69,11 @@ export function UpdateCauseDialog({ cause }: UpdateCauseDialogProps) {
   
   return(
     <Dialog>
-      <Button asChild size={"icon"} variant={"outline"}>
+      <Button 
+        asChild 
+        size="icon"
+        variant="outline"
+      >
         <DialogTrigger>
           <Pencil className="size-4"/>
         </DialogTrigger>

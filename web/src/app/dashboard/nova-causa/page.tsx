@@ -12,10 +12,10 @@ export default () => {
   }
 
   return(
-    <div className="w-full max-w-[1120px] px-5 md:px-0 mx-auto">
+    <div className="w-full">
       <Header/>
 
-      <div className="mt-10">
+      <div className="mt-10 px-5 md:px-14">
         <div>
           <h1 className="text-2xl font-bold">Criar nova causa</h1>
 

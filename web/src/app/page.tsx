@@ -6,17 +6,22 @@ import { Button } from "@/components/ui/button";
 import { Header } from "@/components/Header";
 import { Separator } from "@/components/ui/separator";
 import { ListAllCauses } from "@/components/ListAllCauses";
-import { ChevronsDown, HeartHandshake, Instagram, Phone, ShieldCheck, ThumbsUp } from "lucide-react";
+import { 
+  ChevronsDown, 
+  HeartHandshake, 
+  Instagram, 
+  Phone, 
+  ShieldCheck, 
+  ThumbsUp 
+} from "lucide-react";
 
-import Image from "next/image";
 import Link from "next/link";
+import Image from "next/image";
 
 export default async () => {
   return(
     <div className="w-full">
-      <div className="px-20">
-        <Header/>
-      </div>
+      <Header/>
       
       <Link 
         href="" 
@@ -28,8 +33,8 @@ export default async () => {
         <ChevronsDown className="size-4 animate-bounce"/>
       </Link>
 
-      <div className="mt-10 md:mt-20 px-20 space-y-16">
-        <div className=" grid grid-cols-2 gap-10">
+      <div className="md:px-14 px-5 mt-10 md:mt-20 space-y-16">
+        <div className="grid grid-cols-2 gap-10">
           <div className="flex flex-col items-start justify-center gap-8">
             <div>
               <h1 className="text-5xl md:text-6xl font-alt leading-none">
@@ -42,11 +47,8 @@ export default async () => {
               </span>
             </div>
 
-            <div className="flex items-center gap-5">
-              <Button 
-                asChild 
-                className="flex gap-1 bg-green-500 hover:bg-green-600"
-              >
+            <div className="flex items-center gap-2">
+              <Button asChild>
                 <Link href="/login">               
                   Seja herói de uma causa
                 </Link>

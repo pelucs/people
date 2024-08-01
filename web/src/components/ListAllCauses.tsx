@@ -1,14 +1,18 @@
 "use client"
 
 import Link from "next/link";
+import Image from "next/image";
+import example from "@/assets/example.jpg";
 
 import { api } from "@/api/axios";
+import { ptBR } from "date-fns/locale";
 import { Cause } from "@/types/cause";
 import { Button } from "./ui/button";
-import { useEffect, useState } from "react";
-import { ChevronRight, Plus, Search } from "lucide-react";
+import { format } from "date-fns";
 import { Loading } from "./Loading";
 import { Separator } from "./ui/separator";
+import { useEffect, useState } from "react";
+import { ChevronRight, Plus, Search } from "lucide-react";
 
 export function ListAllCauses() {
 
@@ -62,34 +66,45 @@ export function ListAllCauses() {
         {!loading ? (
           <>
             {filteredCausesBySearch.length > 0 ? (
-              <div className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-5">
+              <div className="mt-5 grid grid-cols-1 md:grid-cols-3 gap-5">
                 {filteredCausesBySearch.map((cause) => (
                   <Link 
                     key={cause.id}
-                    href={`/causa/${cause.id}`} 
-                    className="p-5 md:p-8 flex flex-col gap-5 rounded-md border border-transparent 
-                    transition-colors hover:border-green-500 bg-secondary"
+                    href={`/causa/${cause.id}`}
+                    className="rounded-xl overflow-hidden border hover:border-primary shadow relative
+                    transition-colors"
                   >
-                    <div className="flex flex-col gap-1">
-                      <span className="label">Título</span>
-                      <span className="font-medium">{cause.title}</span>
+                    <Image 
+                      src={example} 
+                      alt="Exemplo" 
+                      className=""
+                    />
+
+                    <div className="py-5 px-6 space-y-5">
+                      <div className="flex flex-col gap-1">
+                        <h1 className="leading-tight text-lg font-semibold">
+                          {cause.title}
+                        </h1>
+
+                        <p className="text-sm text-muted-foreground leading-tight">
+                          {cause.description}
+                        </p>
+                      </div>
+
+                      <div>
+                        <span className="text-xs text-muted-foreground">Registrada em</span>
+
+                        <p className="font-medium leading-tight">
+                          {format(new Date(cause.createAt), "dd 'de' MMM, y", { locale: ptBR })}
+                        </p>
+                      </div>
+
+                      <span className="flex items-center gap-2 text-primary underline font-semibold">
+                        Ver mais informações
+
+                        <ChevronRight className="size-4"/>
+                      </span>
                     </div>
-
-                    <div className="flex flex-col gap-1">
-                      <span className="label">Descrição</span>
-                      <span className="font-medium leading-tight">{cause.description}</span>
-                    </div>
-
-                    <div className="flex flex-col gap-1">
-                      <span className="label">Localização</span>
-                      <span className="font-medium">{cause.location}</span>
-                    </div>
-
-                    <span className="flex items-center gap-1 underline font-semibold text-green-500">
-                      Ver mais informações
-
-                      <ChevronRight className="size-4"/>
-                    </span>
                   </Link>
                 ))}
               </div>

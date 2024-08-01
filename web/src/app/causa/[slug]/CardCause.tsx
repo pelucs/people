@@ -1,5 +1,8 @@
 "use client"
 
+import Image from "next/image";
+import example from "@/assets/example.jpg";
+
 import { api } from "@/api/axios";
 import { ptBR } from "date-fns/locale";
 import { Cause } from "@/types/cause";
@@ -8,14 +11,12 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Check, Copy, Share2 } from "lucide-react";
+import { Share2, ShieldCheck } from "lucide-react";
 
 export function CardCause() {
 
   const { slug } = useParams<{slug : string }>();
-
   const [cause, setCause] = useState<Cause>();
-  const [copy, setCopy] = useState<boolean>(false);
 
   useEffect(() => {
     const getCause = async () => {
@@ -39,102 +40,95 @@ export function CardCause() {
       url: url,
     };
     
-    await navigator.share(shareData)
-  }
-
-  // Função para copiar id para área de transferência
-  const copyId = (id: string) => {
-    if(id){
-      navigator.clipboard.writeText(id);
-
-      setCopy(true)
-      setTimeout(() => setCopy(false), 2000)
-    }
+    await navigator.share(shareData);
   }
 
   return(
     <div>
       {cause ? (
-        <div className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-5">
-          <div className="p-5 md:p-8 flex flex-col gap-5 rounded-md bg-secondary">
-            <div className="flex items-start justify-between">
-              <div className="flex flex-col gap-1">
-                <span className="label">ID da causa</span>
-                
-                <div className="flex items-center gap-2">
-                  <span className="font-medium">{slug}</span>
-                  
-                  <Button 
-                    size="icon" 
-                    title="Copiar id"
-                    disabled={copy}
-                    onClick={() => copyId(cause.id)}
-                    className="size-7 text-black bg-zinc-300"
-                  >
-                    {copy ? (
-                      <Check className="size-4"/>
-                    ) : (
-                      <Copy strokeWidth={1} className="size-3"/>
-                    )}
-                  </Button>
-                </div>
+        <div className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-4">
+
+          <div className="py-3 px-4 md:hidden flex items-center gap-2 rounded-md font-semibold text-sm text-primary bg-primary/10">
+            <ShieldCheck className="w-4 text-primary"/>
+
+            Esta causa foi verificada!
+          </div>
+
+          <div className="rounded-xl overflow-hidden aspect-video">
+            <Image 
+              src={example} 
+              alt=""
+              className="w-full"
+            />
+          </div>
+
+          <div className="flex flex-col gap-4">
+            <div className="py-3 px-4 hidden md:flex items-center gap-2 rounded-md font-semibold text-sm text-primary bg-primary/10">
+              <ShieldCheck className="w-4 text-primary"/>
+
+              Esta causa foi verificada!
+            </div>
+
+            <div className="p-5 md:p-8 flex flex-col gap-4 rounded-xl bg-secondary">
+              <div className="flex items-start justify-between gap-5">
+                <h1 className="text-2xl font-bold leading-none">
+                  {cause.title}
+                </h1>
+
+                <Button 
+                  size="sm" 
+                  className="gap-2"
+                  onClick={() => share(`${window.location.href}`)}
+                >
+                  <Share2 className="size-4"/>
+
+                  Compartilhar
+                </Button>
               </div>
 
-              <Button 
-                size={"icon"} 
-                variant={"secondary"} 
-                onClick={() => share(`${window.location.href}`)}
-                className="hover:text-green-500"
-              >
-                <Share2 className="size-4"/>
-              </Button>
+              <div className="flex flex-col gap-1">
+                <span className="label">Descrição</span>
+                <span className="font-medium leading-tight">{cause.description}</span>
+              </div>
+
+              <div className="flex flex-col gap-1">
+                <span className="label">Localização</span>
+                <span className="font-medium">{cause.location}</span>
+              </div>
+
+              <div className="flex flex-col gap-1">
+                <span className="label">Registrada em</span>
+                <span className="font-medium">
+                  {format(new Date(cause.createAt), "dd 'de' MMM, y", { locale: ptBR })}
+                </span>
+              </div>
             </div>
 
-            <div className="flex flex-col gap-1">
-              <span className="label">Título</span>
-              <span className="font-medium">{cause.title}</span>
-            </div>
+            <div className="h-fit p-5 md:p-8 flex flex-col gap-5 rounded-md bg-secondary">
+              <h1 className="font-bold text-xl leading-tight">
+                Entre em contato <br/>
+                Seja o herói dessa causa!
+              </h1>
 
-            <div className="flex flex-col gap-1">
-              <span className="label">Descrição</span>
-              <span className="font-medium leading-tight">{cause.description}</span>
-            </div>
+              <div className="grid grid-cols-2 gap-4">
+                <Button asChild className="h-14">
+                  <a target="_blank" href={`https://api.whatsapp.com/send?phone=${
+                    cause.contact.replace(/\D/g, '')
+                  }`}>
+                    Contato
+                  </a>
+                </Button>
 
-            <div className="flex flex-col gap-1">
-              <span className="label">Localização</span>
-              <span className="font-medium">{cause.location}</span>
-            </div>
-
-            <div className="flex flex-col gap-1">
-              <span className="label">Registrada em</span>
-              <span className="font-medium">
-                {format(new Date(cause.createAt), "dd 'de' MMM, y", { locale: ptBR })}
-              </span>
-            </div>
-          </div>
-
-          <div className="h-fit p-5 md:p-8 flex flex-col gap-5 rounded-md bg-secondary">
-            <h1 className="font-bold text-xl leading-tight">
-              Entre em contato <br/>
-              Seja o herói dessa causa!
-            </h1>
-
-            <div className="grid grid-cols-2 gap-4">
-              <Button asChild className="flex-1 h-14 bg-green-500 hover:bg-green-600">
-                <a target="_blank" href={`https://api.whatsapp.com/send?phone=${
-                  cause.contact.replace(/\D/g, '')
-                }`}>
-                  Contato
-                </a>
-              </Button>
-
-              <Button asChild className="flex-1 h-14 bg-green-500 hover:bg-green-600">
-                <a href={`mailto:${cause.email}`}>
-                  Email
-                </a>
-              </Button>
+                <Button asChild className="h-14">
+                  <a href={`mailto:${cause.email}`}>
+                    Email
+                  </a>
+                </Button>
+              </div>
             </div>
           </div>
+
+          
         </div>
       ) : (
         <div className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-5">

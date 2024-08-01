@@ -11,8 +11,8 @@ import { toast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
-import { Eye, LogIn } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Eye, EyeOff, LoaderCircle, LogIn } from "lucide-react";
 
 const formSchema = z.object({
   email: z.string().email("Email incorreto."),
@@ -24,29 +24,37 @@ type FormTypes = z.infer<typeof formSchema>;
 export default () => {
 
   const [visiblePassword, setVisiblePassword] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const { handleSubmit, register, formState: { errors } } = useForm<FormTypes>({
     resolver: zodResolver(formSchema)
   });
 
   const login = async (data: FormTypes) => {
+    setIsLoading(true);
+
     const { email, password } = data;
 
-    await api.post("/login", {
-      email,
-      password,
-    })
-    .then(res => {
-      const expireTokenInSeconds = 60 * 60 * 24 * 30;
-      document.cookie = `token=${res.data}; Path=/; max-age=${expireTokenInSeconds};` 
+    try {
+      const res = await api.post("/login", {
+        email,
+        password,
+      });
 
-      window.location.pathname = "/"
-    })
-    .catch(err => {
-      toast({
-        title: "Email e/ou senha incorreto(s)"
-      })
-    })
+      const token = res.data;
+      const expireTokenInSeconds = 60 * 60 * 24 * 30;
+
+      document.cookie = `token=${token}; Path=/; max-age=${expireTokenInSeconds};` 
+      window.location.pathname = "/dashboard";
+    } catch(err) {
+      console.log(err)
+
+      // toast({
+      //   title: "Email e/ou senha incorreto(s)"
+      // })
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   return (
@@ -78,7 +86,7 @@ export default () => {
               <div className="flex flex-col gap-1">
                 <div className="relative">
                   <input
-                    type="password"
+                    type={visiblePassword ? "text" : "password"}
                     className="w-full pr-6 input"
                     {...register("password")}
                     placeholder="Informe sua senha"
@@ -86,10 +94,16 @@ export default () => {
 
                   <Button 
                     size="icon" 
-                    // variant="" 
+                    type="button"
+                    variant="ghost" 
+                    onClick={() => setVisiblePassword(!visiblePassword)}
                     className="size-6 absolute top-[10px] right-2"
                   >
-                    <Eye className="size-4"/>
+                    {visiblePassword ? (
+                      <EyeOff className="size-4"/>
+                    ) : (
+                      <Eye className="size-4"/>
+                    )}
                   </Button>
                 </div>
                 
@@ -100,8 +114,12 @@ export default () => {
                 )}
               </div>
 
-              <Button type="submit" className="button">
-                Efetuar Login
+              <Button 
+                type="submit" 
+                disabled={isLoading}
+                className="button"
+              >
+                {isLoading ? <LoaderCircle className="size-4 animate-spin"/> : "Efetuar Login"}
               </Button>
             </form>
 
