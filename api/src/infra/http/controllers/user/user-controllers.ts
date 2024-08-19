@@ -80,9 +80,6 @@ export class UserControllers {
         name: user.name,
         email: user.email,
         type: user.type,
-        createAt: user.createAt,
-        contact: user.contact,
-        address: user.address,
       });
     } catch(err) {
       if(err instanceof UserNotFoundError) {

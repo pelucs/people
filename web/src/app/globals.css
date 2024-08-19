@@ -42,9 +42,10 @@
   }
 }
   
-/* .button{
-  @apply w-full max-w-96 h-10 rounded-md bg-green-500 hover:bg-green-600;
-} */
+.my-config {
+  --uc-primary-oklch-dark: 69% 0.1768 130;
+  --uc-primary-oklch-light: 59% 0.1724 130;
+}
 
 .input{
   @apply flex-1 py-2 px-3 rounded-md border bg-white;

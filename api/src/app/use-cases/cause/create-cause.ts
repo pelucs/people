@@ -2,12 +2,12 @@ import { Cause } from "../../entities/cause/cause";
 import { CauseRepositories } from "@app/repositories/causeRepositories";
 
 interface CreateUserRequest {
-  userId: string;
   title: string;
   email: string;
   contact: string;
   location: string;
   description: string;
+  expirationAt: Date;
 }
 
 export class CreateCause {
@@ -19,12 +19,12 @@ export class CreateCause {
     const data = request;
 
     const cause = new Cause({
-      userId: data.userId,
       title: data.title,
       email: data.email,
       contact: data.contact,
       location: data.location,
       description: data.description,
+      expirationAt: data.expirationAt,
     });
 
     await this.repository.create(cause);

@@ -24,7 +24,7 @@ export default () => {
           </span>
         </div>
 
-        <CreateCauseForm userId={user.id}/>
+        <CreateCauseForm/>
       </div>
 
       <Footer/>

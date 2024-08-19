@@ -11,21 +11,21 @@ describe("Get all causes", () => {
     const getAllCauses = new GetAllCauses(repositories);
 
     await createCause.execute({
-      userId: randomUUID(),
       title: "Doação de um pacote de fraldas",
       description: "Preciso de um pacote de fraldas para meu bebê de 5 meses. Por favor nos ajude!",
       contact: "83 98729-6826",
       email: "pedro@gmail.com",
-      location: "Rua Doutor Paulo Roberto Mayer, 556"
+      location: "Rua Doutor Paulo Roberto Mayer, 556",
+      expirationAt: new Date("20/08/2024"),
     });
 
     await createCause.execute({
-      userId: randomUUID(),
       title: "Doação de um pacote de fraudas",
       description: "Preciso de um pacote de fraudas para meu bebê de 5 meses. Por favor nos ajude!",
       contact: "83 98729-6826",
       email: "pedro@gmail.com",
-      location: "Rua Doutor Paulo Roberto Mayer, 556"
+      location: "Rua Doutor Paulo Roberto Mayer, 556",
+      expirationAt: new Date("20/08/2024"),
     });
 
     const { causes } = await getAllCauses.execute();

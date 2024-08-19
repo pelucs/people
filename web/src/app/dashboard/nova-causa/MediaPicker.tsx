@@ -9,11 +9,11 @@ import { ChangeEvent } from "react";
 import { CloudUpload, Upload } from "lucide-react";
 
 interface MediaPickerProps {
-  imageBase64: string;
-  setImageBase64: (imageBase64: string) => void;
+  imageFile: File | null;
+  setImageFile: (imageFile: File | null) => void;
 }
 
-export function MediaPicker({ imageBase64, setImageBase64 }: MediaPickerProps) {
+export function MediaPicker({ imageFile, setImageFile }: MediaPickerProps) {
 
   const handleImageUpload = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -22,7 +22,7 @@ export function MediaPicker({ imageBase64, setImageBase64 }: MediaPickerProps) {
       const reader = new FileReader();
 
       reader.onloadend = () => {
-        setImageBase64(reader.result as string);
+        setImageFile(file);
       };
 
       reader.readAsDataURL(file);
@@ -34,18 +34,18 @@ export function MediaPicker({ imageBase64, setImageBase64 }: MediaPickerProps) {
       <div 
         className="aspect-video flex items-center justify-center border rounded-xl border-dashed group relative overflow-hidden"
       >
-        {imageBase64 && (
+        {imageFile && (
           <Image 
             alt="" 
             width={1920} 
             height={1080} 
-            src={imageBase64} 
+            src={URL.createObjectURL(imageFile)} 
             className="w-full"
           />
         )}
         
         <div className={cn("w-full h-full flex items-center justify-center inset-0 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transition-all", {
-          "opacity-0 group-hover:opacity-100 group-hover:bg-black/60": imageBase64,
+          "opacity-0 group-hover:opacity-100 group-hover:bg-black/60": imageFile,
         })}>
           <input 
             id="file" 
@@ -56,8 +56,8 @@ export function MediaPicker({ imageBase64, setImageBase64 }: MediaPickerProps) {
           />
 
           <div className={cn("flex flex-col justify-center items-center gap-4", {
-            "text-white": imageBase64,
-            "text-muted-foreground": !imageBase64,
+            "text-white": imageFile,
+            "text-muted-foreground": !imageFile,
           })}>
             <h1 className="flex items-center justify-center flex-col gap-2">
               <CloudUpload className="size-8"/>

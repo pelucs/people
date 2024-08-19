@@ -11,9 +11,9 @@ export async function userRoutes(app: FastifyInstance) {
     await userController.login(request, reply);
   });
 
-  app.get("/user/:userId", async (request, reply) => {
-    await userController.getInfoUser(request, reply);
-  });
+  // app.get("/user/:userId", async (request, reply) => {
+  //   await userController.getInfoUser(request, reply);
+  // });
 
   app.put("/user/:userId/update", async (request, reply) => {
     await userController.updateInfoUser(request, reply);

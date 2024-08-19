@@ -4,7 +4,6 @@ import { UpdateCause } from "@app/use-cases/cause/update-cause";
 import { DeleteCause } from "@app/use-cases/cause/delete-cause";
 import { GetAllCauses } from "@app/use-cases/cause/get-all-causes";
 import { GetCauseById } from "@app/use-cases/cause/get-cause-by-id";
-import { GetCausesByUserId } from "@app/use-cases/cause/get-causes-by-userid";
 import { CauseNotFoundError } from "@app/exceptions/cause-not-found-error";
 import { CauseViewModelMapper } from "@infra/http/view-models/cause-view-model";
 import { FastifyReply, FastifyRequest } from "fastify";
@@ -13,7 +12,6 @@ export class CauseController {
 
   constructor(
     private createCause: CreateCause,
-    private getCauses: GetCausesByUserId,
     private getAllCauses: GetAllCauses,
     private getCauseById: GetCauseById,
     private updateCause: UpdateCause,
@@ -24,23 +22,23 @@ export class CauseController {
   async create(request: FastifyRequest, reply: FastifyReply) {
     try {
       const bodySchema = z.object({
-        userId: z.string(),
         title: z.string(),
         email: z.string(),
         contact: z.string(),
         location: z.string(),
         description: z.string(),
+        expirationAt: z.coerce.date(),
       })
       
       const data = bodySchema.parse(request.body);
 
       const { cause } = await this.createCause.execute({
-        userId: data.userId,
         title: data.title,
         email: data.email,
         contact: data.contact,
         location: data.location,
         description: data.description,
+        expirationAt: data.expirationAt,
       });
 
       return reply.status(201).send({
@@ -50,25 +48,6 @@ export class CauseController {
     } catch(err) {
       return reply.status(400).send("Erro inesperado")
     } 
-  }
-
-  // Resgatando todas as causas do usuário
-  async causesByUser(request: FastifyRequest, reply: FastifyReply) {
-    try {
-      const paramsSchema = z.object({
-        userId: z.string(),
-      });
-
-      const data = paramsSchema.parse(request.params);
-
-      const { causes } = await this.getCauses.execute(data);
-
-      return reply.status(200).send(
-        causes.map(cause => CauseViewModelMapper.toHttp(cause))
-      );
-    } catch (err){
-      return reply.status(400).send("Erro inesperado")
-    }
   }
 
   // Resgatando todas as causas

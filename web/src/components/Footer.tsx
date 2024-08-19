@@ -8,7 +8,7 @@ export function Footer(){
         target="_blank"
         className="underline ml-1"
       >
-        @pelucs
+        @pdlucs
       </a>
     </p>
   );

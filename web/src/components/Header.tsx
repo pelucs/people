@@ -5,19 +5,20 @@ import Link from "next/link";
 import { Button } from "./ui/button";
 import { getUser } from "@/lib/auth";
 import { Separator } from "./ui/separator";
-import { LayoutGrid, LogOut, Search } from "lucide-react";
+import { LayoutGrid, LogOut, Menu, Search, User } from "lucide-react";
+import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 
 export function Header(){
 
   const user = getUser();
 
   return(
-    <div className="flex-1 h-16 px-5 md:px-14 flex items-center justify-between border-b">
+    <div className="flex-1 h-20 px-5 md:px-14 flex items-center justify-between border-b">
       <Link href="/">
         <Image 
           src={logo}
           alt="Logo BeHero"
-          className="w-40"
+          className="w-48"
         />
       </Link>
 
@@ -39,13 +40,19 @@ export function Header(){
         <Separator orientation="vertical" className="h-6"/>
 
         <div className="flex items-center gap-2">
-          <Button variant="secondary" size="icon" className="size-8">
+          <Button 
+            size="icon" 
+            variant="secondary" 
+          >
             <Search className="size-4"/>
           </Button>
 
-          {user && (
+          {/* {user && (
             <>
-              <Button asChild size="sm" className="h-8 gap-2">
+              <Button 
+                asChild 
+                className="h-8 gap-2"
+              >
                 <Link href="/dashboard">
                   <LayoutGrid className="size-4"/>
 
@@ -64,6 +71,54 @@ export function Header(){
                 </Link>
               </Button>
             </>
+          )} */}
+
+          {user && (
+            <Popover>
+              <Button 
+                asChild
+                variant="outline"
+                className="rounded-full px-2"
+              >
+                <PopoverTrigger className="flex items-center gap-2">
+                  <Menu className="size-4 ml-2"/>
+
+                  <span className="size-7 flex items-center justify-center rounded-full bg-foreground">
+                    <User className="size-4 text-background"/>
+                  </span>
+                </PopoverTrigger>
+              </Button>
+
+              <PopoverContent align="end" className="p-1.5 w-52">
+                <Button 
+                  asChild 
+                  size="sm"
+                  variant="ghost"
+                  className="w-full justify-start gap-2"
+                >
+                  <Link href="/dashboard">
+                    <LayoutGrid className="size-4"/>
+                    Dashboard
+                  </Link>
+                </Button>
+
+                <div className="px-2">
+                  <Separator orientation="horizontal" className="my-1"/>
+                </div>
+
+                <Button 
+                  asChild 
+                  size="sm"
+                  variant="ghost"
+                  className="w-full justify-start gap-2"
+                >
+                  <Link href="/api/auth/logout">
+                    <LogOut className="size-4"/>
+                    Encerrar sessão
+                  </Link>
+                </Button>
+              </PopoverContent>
+            </Popover>
           )}
         </div>
       </div>

@@ -32,25 +32,7 @@ export class PrismaCauseRepositories implements CauseRepositories {
     }));
   }
 
-  // Pegando uma causa específica
-  async findCausesByUserId(userId: string): Promise<Cause[]> {
-    const causes = await prisma.cause.findMany({
-      where: {
-        userId,
-      },
-      orderBy: {
-        createAt: "desc"
-      }
-    });
-
-    if(!causes){
-      throw new Error("Causas não encontradas");
-    }
-
-    return causes.map(cause => PrismaCauseMappers.toDomain(cause));
-  }
-
-  // Criação de uma causa
+  // Criando uma causa
   async create(cause: Cause): Promise<void> {
     const raw = PrismaCauseMappers.toPrisma(cause);
 

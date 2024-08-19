@@ -18,11 +18,17 @@ export default () => {
     <div className="w-full space-y-10">
       <Header/>
 
-      <div className="min-h-screen px-5 md:px-14 space-y-5">
+      <div className="min-h-screen px-5 md:px-14 space-y-4">
         <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold">
-            Área admin
-          </h1>
+          <div className="flex items-center justify-center gap-3">
+            <h1 className="text-2xl font-bold">
+              Dashboard
+            </h1>
+
+            <span className="py-2 px-3 rounded-md text-xs text-primary bg-primary/10">
+              Suporte
+            </span>
+          </div>
 
           <Button 
             asChild 
@@ -43,8 +49,4 @@ export default () => {
       <Footer/>
     </div>
   );
-}          
-
-{/* <div>
-  <FormProfile userId={user.id}/>
-</div> */}
+}

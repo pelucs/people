@@ -42,23 +42,28 @@ export function ListAllCauses() {
 
   return(
     <div id="causas" className="mt-5">  
-      <div className="flex flex-col md:flex-row items-start md:items-end md:justify-between">
+      
+      <div className="space-y-10">
+        <div className="flex flex-col items-center justify-center gap-4">
+          <h1 className="text-3xl font-bold">O que você está buscando?</h1>
+          
+          <div className="w-full max-w-xl relative">
+            <Search className="size-6 text-muted-foreground absolute top-5 left-5"/>
+
+            <input 
+              placeholder="Pesquise aqui"
+              onChange={e => setSearch(e.target.value)}
+              className="w-full h-16 pl-14 pr-5 border bg-secondary rounded-full shadow"
+            />
+          </div>
+        </div>
+
         <div className="flex items-center gap-5">
           <Button className="font-medium text-green-800 bg-green-300">
             Todas
           </Button>
 
           <Separator orientation="vertical" className="h-6"/>
-        </div>
-
-        <div className="mt-3 md:mt-0 rounded-md relative bg-white">
-          <Search className="size-4 text-muted-foreground absolute top-3 left-2.5"/>
-
-          <input 
-            placeholder="Pesquise aqui"
-            onChange={e => setSearch(e.target.value)}
-            className="py-2 pl-8 pr-3 bg-secondary rounded-md"
-          />
         </div>
       </div>
 
@@ -72,7 +77,7 @@ export function ListAllCauses() {
                     key={cause.id}
                     href={`/causa/${cause.id}`}
                     className="rounded-xl overflow-hidden border hover:border-primary shadow relative
-                    transition-colors"
+                    transition-colors bg-secondary"
                   >
                     <Image 
                       src={example} 

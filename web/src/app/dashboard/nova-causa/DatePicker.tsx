@@ -1,11 +1,10 @@
 "use client"
 
 import * as React from "react"
-import { ptBR } from "date-fns/locale"
-import { format, intervalToDuration, subDays } from "date-fns"
-import { DateRange } from "react-day-picker"
+import { format, interval, intervalToDuration, isWithinInterval, subDays } from "date-fns"
 
 import { cn } from "@/lib/utils"
+import { ptBR } from "date-fns/locale";
 import { Button } from "@/components/ui/button"
 import { Calendar } from "@/components/ui/calendar"
 import { CalendarDays } from "lucide-react"
@@ -14,60 +13,44 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
+import { intervalDate } from "@/helpers/format-date";
 
 interface DatePickerProps {
-  date: DateRange | undefined
-  setDate: (newDates: DateRange | undefined) => void;
+  date: Date | undefined;
+  setDate: (newDate: Date | undefined) => void;
 }
 
-export function DatePicker(
-  { date, setDate }: DatePickerProps, 
-  { className }: React.HTMLAttributes<HTMLDivElement>,
-) {
-  
+export function DatePicker({ date, setDate }: DatePickerProps) {
   return (
-    <div className={cn("grid gap-2", className)}>
-      <Popover>
-        <PopoverTrigger asChild>
-          <Button
-            id="date"
-            variant={"outline"}
-            className={cn(
-              "flex-1 justify-start gap-2 text-left font-normal",
-              !date && "text-muted-foreground"
-            )}
-          >
-            <CalendarDays className="h-4 w-4" />
-            {date?.from ? (
-              date.to ? (
-                <>
-                  {format(date.from, "LLL dd, y")} -{" "}
-                  {format(date.to, "LLL dd, y")}
-                  
-                  {/* <span className="py-1 px-2 rounded-md bg-primary/10 text-xs">
-                    {intervalToDuration({ start: new Date(date.from), end: new Date(date.to) }).days} dias
-                  </span> */}
-                </>
-              ) : (
-                format(date.from, "LLL dd, y")
-              )
-            ) : (
-              <span>Selecione as datas</span>
-            )}
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent className="w-auto p-0" align="start">
-          <Calendar
-            initialFocus
-            mode="range"
-            locale={ptBR}
-            selected={date}
-            onSelect={setDate}
-            numberOfMonths={2}
-            defaultMonth={date?.from}
-          />
-        </PopoverContent>
-      </Popover>
-    </div>
+    <Popover>
+      <PopoverTrigger asChild>
+        <Button
+          variant={"outline"}
+          className={cn(
+            "justify-start text-left font-normal",
+            !date && "text-muted-foreground"
+          )}
+        >
+          <CalendarDays className="mr-2 size-4" /> 
+          {date ? (
+            `
+              ${format(date, "PPP", { locale: ptBR })} 
+              (${intervalDate({ start: new Date(), end: new Date(date)}).days} dias)
+            `
+          ) : (
+            <span>Selecione a data de expiração</span>
+          )}
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-auto p-0" align="start">
+        <Calendar
+          mode="single"
+          selected={date}
+          onSelect={setDate}
+          initialFocus
+          locale={ptBR}
+        />
+      </PopoverContent>
+    </Popover>
   )
 }

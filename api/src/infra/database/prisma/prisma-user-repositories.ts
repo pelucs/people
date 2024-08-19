@@ -39,7 +39,7 @@ export class PrismaUserRepositories implements UserRepositories {
   // Atualizando as informações do usuário
   async update(userId: string, data: UpdateUserRequest): Promise<void> {
 
-    const { name, type, address, contact } = data;
+    const { name, type } = data;
 
     await prisma.user.update({
       where: {
@@ -47,9 +47,7 @@ export class PrismaUserRepositories implements UserRepositories {
       },
       data: {
         name, 
-        type, 
-        address, 
-        contact,
+        type,
       }
     });
   }

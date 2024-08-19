@@ -38,20 +38,22 @@ export function ListOfCausesForAdmin() {
   return(
     <div className="w-full flex flex-col gap-8">
       <div className="grid grid-cols-3 gap-5">
-        <div className="w-full py-4 px-5 rounded-md bg-secondary">
+        <div className="w-full py-4 px-5 flex flex-col gap-2 rounded-md bg-secondary border shadow">
           <div className="flex items-center justify-between">
             <h1 className="text-sm text-muted-foreground font-medium">Causas registradas</h1>
             <Handshake className="size-4 text-muted-foreground"/>
           </div>
 
-          <strong className="text-4xl font-bold">{causes.length}</strong>
+          <strong className="text-4xl font-bold">
+            {causes.length > 9 ? causes.length : "0" + causes.length}
+          </strong>
         </div>
 
-        <div className="w-full py-4 px-5 rounded-md bg-secondary"/>
-        <div className="w-full py-4 px-5 rounded-md bg-secondary"/>
+        <div className="w-full py-4 px-5 rounded-md bg-secondary border shadow"/>
+        <div className="w-full py-4 px-5 rounded-md bg-secondary border shadow"/>
       </div>
 
-      <div className="space-y-5">
+      <div className="space-y-4">
         <h1 className="text-2xl font-bold">
           Causas em aberto
         </h1>

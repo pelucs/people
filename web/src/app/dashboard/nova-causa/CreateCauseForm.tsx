@@ -1,6 +1,7 @@
 "use client"
 
 import clsx from "clsx";
+import axios from "axios";
 
 import { z } from "zod";
 import { api } from "@/api/axios";
@@ -9,7 +10,6 @@ import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
 import { addDays } from "date-fns";
 import { useState } from "react";
-import { DateRange } from "react-day-picker";
 import { useRouter } from "next/navigation";
 import { DatePicker } from "./DatePicker";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -17,11 +17,10 @@ import { MediaPicker } from "./MediaPicker";
 import { PopoverPortal } from "@radix-ui/react-popover";
 import { AlertCircle, LoaderCircle } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import axios from "axios";
 
-interface CreateCauseFormProps {
-  userId: string;
-}
+import { FileUploaderRegular, TProps } from '@uploadcare/react-uploader';
+import '@uploadcare/react-uploader/core.css';
+import Image from "next/image";
 
 const formSchema = z.object({
   title: z.string({ message: "Campo obrigatório" }),
@@ -34,14 +33,11 @@ const formSchema = z.object({
 
 type FormTypes = z.infer<typeof formSchema>;
 
-export function CreateCauseForm({ userId }: CreateCauseFormProps) {
+export function CreateCauseForm() {
 
-  const [date, setDate] = useState<DateRange | undefined>({
-    from: new Date(),
-    to: addDays(new Date(), 10),
-  });
+  const [date, setDate] = useState<Date>()
 
-  const [imageBase64, setImageBase64] = useState<string>("");
+  const [imagesFile, setImagesFile] = useState<any[]>([]);
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [maxLengthDescription, setMaxLengthDescription] = useState<string>("");
@@ -57,31 +53,20 @@ export function CreateCauseForm({ userId }: CreateCauseFormProps) {
     const { title, description, email, contact, location } = data;
 
     try {
-      console.log('API Key:', process.env.NEXT_PUBLIC_IMAGE_DB_API_KEY);
-
-      const response = await axios.post('https://api.imgbb.com/1/upload', null, {
-        params: {
-          key: process.env.NEXT_PUBLIC_IMAGE_DB_API_KEY,
-          image: imageBase64,
-        },
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-      });
-
-      console.log('Image uploaded successfully:', response.data.data.url);
+      
+      
     } catch (error: any) {
-        if (error.response) {
-          // O servidor respondeu com um status diferente de 2xx
-          console.error('Error response:', error.response.data);
-        } else if (error.request) {
-          // A solicitação foi feita, mas nenhuma resposta foi recebida
-          console.error('Error request:', error.request);
-        } else {
-          // Algo aconteceu ao configurar a solicitação
-          console.error('Error message:', error.message);
-        }
-    }
+      if (error.response) {
+        // O servidor respondeu com um status diferente de 2xx
+        console.error('Error response:', error.response.data);
+      } else if (error.request) {
+        // A solicitação foi feita, mas nenhuma resposta foi recebida
+        console.error('Error request:', error.request);
+      } else {
+        // Algo aconteceu ao configurar a solicitação
+        console.error('Error message:', error.message);
+      }
+  }
 
     // await api.post("/cause/create", {
     //   userId,
@@ -105,12 +90,43 @@ export function CreateCauseForm({ userId }: CreateCauseFormProps) {
     // })
   }
 
+  const handleChangeEvent = (items: TProps) => {
+    setImagesFile([...items.allEntries.filter((file) => file.status === 'success')]);
+  };
+
   return(
     <form 
       onSubmit={handleSubmit(createCause)} 
       className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-8 md:rounded-xl"
     >
-      <MediaPicker imageBase64={imageBase64} setImageBase64={setImageBase64}/>
+      {/* <MediaPicker 
+        imageFile={imageFile} 
+        setImageFile={setImageFile}
+      /> */}
+
+      <div>
+        <FileUploaderRegular
+          imgOnly={true}
+          multipleMax={2}
+          sourceList="local, url"
+          onChange={handleChangeEvent}
+          useCloudImageEditor={false}
+          maxLocalFileSizeBytes={10000000}
+          classNameUploader="my-config uc-light"
+          pubkey={process.env.NEXT_PUBLIC_UPLOADCARE_PUBLIC_KEY}
+        />
+
+        {imagesFile.length > 0 && (
+          {imageFile.map((image) => (
+            <Image
+              width={500}
+              height={500} 
+              src={image.cdnUrl}
+              alt={image.fileInfo.originalFilename}
+            />
+          ))}
+        )}
+      </div>
 
       <div className="flex flex-col gap-3">
         <div className="flex flex-col gap-1">
@@ -161,7 +177,10 @@ export function CreateCauseForm({ userId }: CreateCauseFormProps) {
             </Popover>
           </div>
           
-          <DatePicker date={date} setDate={setDate}/>
+          <DatePicker 
+            date={date} 
+            setDate={setDate}
+          />
 
           {errors.location && (
             <span className="text-sm text-red-500">{errors.location.message}</span>

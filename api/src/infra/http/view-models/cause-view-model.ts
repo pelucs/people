@@ -4,7 +4,6 @@ export class CauseViewModelMapper {
   static toHttp(cause: Cause) {
     return {
       id: cause.id,
-      userId: cause.userId,
       title: cause.title,
       email: cause.email,
       contact: cause.contact,

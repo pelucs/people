@@ -3,10 +3,10 @@ import { ObjectId } from "bson";
 
 interface CauseProps {
   title: string;
-  userId: string;
   email: string;
   contact: string;
   createAt: Date;
+  expirationAt?: Date | null;
   location: string;
   description: string;
 }
@@ -17,6 +17,7 @@ interface CauseUpdate {
   contact?: string | null | undefined;
   location?: string | null | undefined;
   description?: string | null | undefined;
+  expirationAt?: Date | null | undefined;
 }
 
 export class Cause {
@@ -32,11 +33,11 @@ export class Cause {
   }
  
   public set title(title: string) { this.props.title = title }
-  public set userId(userId: string) { this.props.userId = userId }
   public set email(email: string) { this.props.email = email }
   public set contact(contact: string) { this.props.contact = contact }
   public set location(location: string) { this.props.location = location }
   public set description(description: string) { this.props.description = description }
+  public set expirationAt(expirationAt: Date) { this.props.expirationAt = expirationAt; }
   public set createAt(createAt: Date) { this.props.createAt = createAt; }
 
   public update(data: CauseUpdate) {
@@ -45,14 +46,15 @@ export class Cause {
     this.props.contact = data.contact ?? this.props.contact;
     this.props.location = data.location ?? this.props.location;
     this.props.description = data.description ?? this.props.description;
+    this.props.expirationAt = data.expirationAt ?? this.props.expirationAt;
   }
 
   public get id() { return this._id }
-  public get userId() { return this.props.userId }
-  public get title() { return  this.props.title}
-  public get email() { return  this.props.email}
-  public get contact() { return  this.props.contact}
-  public get description() { return  this.props.description}
-  public get location() { return  this.props.location}
-  public get createAt() { return  this.props.createAt}
+  public get title() { return this.props.title}
+  public get email() { return this.props.email}
+  public get contact() { return this.props.contact}
+  public get description() { return this.props.description}
+  public get location() { return this.props.location}
+  public get createAt() { return this.props.createAt}
+  public get expirationAt(): Date | null | undefined { return this.props.expirationAt}
 }

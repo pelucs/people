@@ -10,7 +10,7 @@ describe("Create cause", () => {
       contact: "83 98729-6826",
       email: "pedro@gmail.com",
       location: "Rua Doutos Paulo Roberto Mayer",
-      userId: randomUUID(),
+      expirationAt: new Date("20/08/2024"),
     });
 
     expect(cause).toBeTruthy();

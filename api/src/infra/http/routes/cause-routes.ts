@@ -6,10 +6,6 @@ export async function causeRoutes(app: FastifyInstance) {
     await causeController.create(request, reply);
   });
 
-  app.get("/causes/:userId", async (request: FastifyRequest, reply: FastifyReply) => {
-    await causeController.causesByUser(request, reply);
-  });
-
   app.get("/causes", async (request: FastifyRequest, reply: FastifyReply) => {
     await causeController.allCauses(reply);
   });

@@ -6,8 +6,6 @@ import { UserRepositories } from "@app/repositories/userRepositories";
 export interface UpdateUserRequest {
   name: string;
   type: string;
-  contact: string;
-  address: string;
 }
 
 export class UpdateUser {
@@ -17,7 +15,7 @@ export class UpdateUser {
   ) {}
 
   async execute(userId: string, request: UpdateUserRequest) {
-    const { name, address, contact, type } = request;
+    const { name, type } = request;
 
     const isAlreadyExists = await this.repository.findUserById(userId);
 
@@ -28,8 +26,6 @@ export class UpdateUser {
     await this.repository.update(userId, {
       name,
       type,
-      address,
-      contact
     });
 
     const token = jwt.sign({

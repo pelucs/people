@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Share2, ShieldCheck } from "lucide-react";
+import { BellPlus, Share2, ShieldCheck } from "lucide-react";
 
 export function CardCause() {
 
@@ -54,12 +54,25 @@ export function CardCause() {
             Esta causa foi verificada!
           </div>
 
-          <div className="rounded-xl overflow-hidden aspect-video">
-            <Image 
-              src={example} 
-              alt=""
-              className="w-full"
-            />
+          <div className="space-y-5">
+            <div className="rounded-xl overflow-hidden aspect-video">
+              <Image 
+                src={example} 
+                alt=""
+                className="w-full"
+              />
+            </div>
+            
+            <a 
+              target="_blank"
+              href="https://www.instagram.com/socioambiental_cg/" 
+              className="w-full md:w-fit py-3 px-4 flex items-center font-medium text-sm gap-2 rounded-lg border shadow
+              bg-primary text-background"
+            >
+              <BellPlus className="size-4 animate-bounce"/>
+
+              Siga-nos no instagram para saber mais novidades
+            </a>
           </div>
 
           <div className="flex flex-col gap-4">
@@ -69,7 +82,7 @@ export function CardCause() {
               Esta causa foi verificada!
             </div>
 
-            <div className="p-5 md:p-8 flex flex-col gap-4 rounded-xl bg-secondary">
+            <div className="p-5 md:p-8 flex flex-col gap-4 rounded-xl bg-secondary border shadow">
               <div className="flex items-start justify-between gap-5">
                 <h1 className="text-2xl font-bold leading-none">
                   {cause.title}
@@ -104,7 +117,7 @@ export function CardCause() {
               </div>
             </div>
 
-            <div className="h-fit p-5 md:p-8 flex flex-col gap-5 rounded-md bg-secondary">
+            <div className="h-fit p-5 md:p-8 flex flex-col gap-5 rounded-xl bg-secondary border shadow">
               <h1 className="font-bold text-xl leading-tight">
                 Entre em contato <br/>
                 Seja o herói dessa causa!
@@ -127,8 +140,6 @@ export function CardCause() {
               </div>
             </div>
           </div>
-
-          
         </div>
       ) : (
         <div className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-5">
