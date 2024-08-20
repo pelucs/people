@@ -10,6 +10,9 @@ export class CauseViewModelMapper {
       description: cause.description,
       location: cause.location,
       createAt: cause.createAt,
+      expirationAt: cause.expirationAt,
+      imagesUrl: cause.imagesUrl,
+      isPublic: cause.isPublic,
     }
   }
 }

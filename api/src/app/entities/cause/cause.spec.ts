@@ -10,7 +10,9 @@ describe("Create cause", () => {
       contact: "83 98729-6826",
       email: "pedro@gmail.com",
       location: "Rua Doutos Paulo Roberto Mayer",
+      isPublic: false,
       expirationAt: new Date("20/08/2024"),
+      imagesUrl: ["teste.png"]
     });
 
     expect(cause).toBeTruthy();

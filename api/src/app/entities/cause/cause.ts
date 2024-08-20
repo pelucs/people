@@ -8,7 +8,9 @@ interface CauseProps {
   createAt: Date;
   expirationAt?: Date | null;
   location: string;
+  isPublic: boolean;
   description: string;
+  imagesUrl: string[];
 }
 
 interface CauseUpdate {
@@ -17,7 +19,9 @@ interface CauseUpdate {
   contact?: string | null | undefined;
   location?: string | null | undefined;
   description?: string | null | undefined;
+  isPublic?: boolean | null | undefined;
   expirationAt?: Date | null | undefined;
+  imagesUrl?: string[] | null | undefined;
 }
 
 export class Cause {
@@ -38,6 +42,8 @@ export class Cause {
   public set location(location: string) { this.props.location = location }
   public set description(description: string) { this.props.description = description }
   public set expirationAt(expirationAt: Date) { this.props.expirationAt = expirationAt; }
+  public set isPublic(isPublic: boolean) { this.props.isPublic = isPublic; }
+  public set imagesUrl(imagesUrl: string[]) { this.props.imagesUrl = imagesUrl; }
   public set createAt(createAt: Date) { this.props.createAt = createAt; }
 
   public update(data: CauseUpdate) {
@@ -47,6 +53,8 @@ export class Cause {
     this.props.location = data.location ?? this.props.location;
     this.props.description = data.description ?? this.props.description;
     this.props.expirationAt = data.expirationAt ?? this.props.expirationAt;
+    this.props.isPublic = data.isPublic ?? this.props.isPublic;
+    this.props.imagesUrl = data.imagesUrl ?? this.props.imagesUrl;
   }
 
   public get id() { return this._id }
@@ -56,5 +64,7 @@ export class Cause {
   public get description() { return this.props.description}
   public get location() { return this.props.location}
   public get createAt() { return this.props.createAt}
+  public get isPublic() { return this.props.isPublic}
+  public get imagesUrl() { return this.props.imagesUrl}
   public get expirationAt(): Date | null | undefined { return this.props.expirationAt}
 }

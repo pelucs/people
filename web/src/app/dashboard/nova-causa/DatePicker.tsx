@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { format, interval, intervalToDuration, isWithinInterval, subDays } from "date-fns"
+import { addDays, format, interval, intervalToDuration, isWithinInterval, subDays } from "date-fns"
 
 import { cn } from "@/lib/utils"
 import { ptBR } from "date-fns/locale";
@@ -45,10 +45,11 @@ export function DatePicker({ date, setDate }: DatePickerProps) {
       <PopoverContent className="w-auto p-0" align="start">
         <Calendar
           mode="single"
-          selected={date}
-          onSelect={setDate}
           initialFocus
           locale={ptBR}
+          selected={date}
+          onSelect={setDate}
+          fromDate={addDays(new Date(), 1)}
         />
       </PopoverContent>
     </Popover>

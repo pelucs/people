@@ -17,6 +17,7 @@ describe("Get all causes", () => {
       email: "pedro@gmail.com",
       location: "Rua Doutor Paulo Roberto Mayer, 556",
       expirationAt: new Date("20/08/2024"),
+      imagesUrl: ["teste.png"]
     });
 
     await createCause.execute({
@@ -26,6 +27,7 @@ describe("Get all causes", () => {
       email: "pedro@gmail.com",
       location: "Rua Doutor Paulo Roberto Mayer, 556",
       expirationAt: new Date("20/08/2024"),
+      imagesUrl: ["teste.png"]
     });
 
     const { causes } = await getAllCauses.execute();

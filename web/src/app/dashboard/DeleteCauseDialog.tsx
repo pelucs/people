@@ -2,15 +2,18 @@
 
 import { api } from "@/api/axios";
 import { toast } from "@/components/ui/use-toast";
-import { Trash } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { Hash, LoaderCircle, Trash } from "lucide-react";
 import { 
   Dialog, 
   DialogClose, 
   DialogContent, 
+  DialogDescription, 
+  DialogHeader, 
   DialogOverlay, 
   DialogPortal, 
+  DialogTitle, 
   DialogTrigger 
 } from "@/components/ui/dialog";
 
@@ -20,22 +23,26 @@ interface DeleteCauseDialog {
 
 export function DeleteCauseDialog({ causeId }: DeleteCauseDialog) {
 
-  const navigation = useRouter();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const deleteCause = async () => {
-    await api.delete(`/cause/${causeId}`)
-    .then(res => {
+    setIsLoading(true);
+
+    try {
+      await api.delete(`/cause/${causeId}`);
+
       toast({
         title: "Causa deletada com sucesso"
       });
 
       window.location.reload();
-    })
-    .catch(err => {
+    } catch(err: any) {
       toast({
         title: err.message
       })
-    })
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   return(
@@ -53,26 +60,31 @@ export function DeleteCauseDialog({ causeId }: DeleteCauseDialog) {
       <DialogPortal>
         <DialogOverlay/>
 
-        <DialogContent>
-          <div className="flex flex-col gap-2">
-            <h1 className="text-2xl font-bold leading-none">
+        <DialogContent className="space-y-4">
+          <DialogHeader>
+            <DialogTitle>
               Deseja realmente excluir <br/> 
               essa causa?
-            </h1>
+            </DialogTitle>
 
-            <span>#ID: {causeId}</span>
-          </div>
+            <DialogDescription className="w-fit text-xs flex items-center gap-1 py-1 px-2 rounded bg-secondary">
+              <Hash className="size-3"/>
+              
+              {causeId}
+            </DialogDescription>
+          </DialogHeader>
 
           <div className="grid grid-cols-2 gap-4">
             <Button 
               variant={"destructive"} 
               onClick={deleteCause}
-              className="w-full max-w-96 h-14 rounded-md"
+              disabled={isLoading}
+              className="w-full max-w-96 rounded-md disabled:opacity-50"
             >
-              Excluir
+              { isLoading ? <LoaderCircle className="size-4 animate-spin"/> : "Excluir" }
             </Button>
 
-            <Button asChild className="w-full max-w-96 h-14 rounded-md bg-zinc-200 hover:bg-zinc-300 text-black">
+            <Button asChild className="w-full max-w-96 rounded-md bg-zinc-200 hover:bg-zinc-300 text-black">
               <DialogClose>
                 Cancelar
               </DialogClose>

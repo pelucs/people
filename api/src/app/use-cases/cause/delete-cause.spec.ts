@@ -17,6 +17,7 @@ describe("Delete a cause", () => {
       email: "pedro@gmail.com",
       location: "Rua Doutor Paulo Roberto Mayer, 556",
       expirationAt: new Date("20/08/2024"),
+      imagesUrl: ["teste.png"]
     });
 
     await repositories.delete(cause.id);

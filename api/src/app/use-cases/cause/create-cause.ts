@@ -8,6 +8,7 @@ interface CreateUserRequest {
   location: string;
   description: string;
   expirationAt: Date;
+  imagesUrl: string[];
 }
 
 export class CreateCause {
@@ -25,6 +26,8 @@ export class CreateCause {
       location: data.location,
       description: data.description,
       expirationAt: data.expirationAt,
+      imagesUrl: data.imagesUrl,
+      isPublic: false,
     });
 
     await this.repository.create(cause);

@@ -1,30 +1,28 @@
 "use client"
 
+import '@uploadcare/react-uploader/core.css';
+
 import clsx from "clsx";
-import axios from "axios";
+import Image from "next/image";
 
 import { z } from "zod";
 import { api } from "@/api/axios";
 import { toast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
-import { addDays } from "date-fns";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { DatePicker } from "./DatePicker";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { MediaPicker } from "./MediaPicker";
 import { PopoverPortal } from "@radix-ui/react-popover";
 import { AlertCircle, LoaderCircle } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { FileUploaderRegular, OutputCollectionState } from '@uploadcare/react-uploader';
 
-import { FileUploaderRegular, TProps } from '@uploadcare/react-uploader';
-import '@uploadcare/react-uploader/core.css';
-import Image from "next/image";
 
 const formSchema = z.object({
   title: z.string({ message: "Campo obrigatório" }),
-  email: z.string({ message: "Capo obrigatório" }).email(),
+  email: z.string({ message: "Campo obrigatório" }).email(),
   contact: z.string({ message: "Campo obrigatório" }),
   location: z.string({ message: "Campo obrigatório" }),
   description: z.string({ message: "Campo obrigatório" })
@@ -34,10 +32,9 @@ const formSchema = z.object({
 type FormTypes = z.infer<typeof formSchema>;
 
 export function CreateCauseForm() {
-
-  const [date, setDate] = useState<Date>()
-
-  const [imagesFile, setImagesFile] = useState<any[]>([]);
+  
+  const [date, setDate] = useState<Date>();
+  const [imageUrl, setImagesUrl] = useState<string[]>([]);
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [maxLengthDescription, setMaxLengthDescription] = useState<string>("");
@@ -48,83 +45,81 @@ export function CreateCauseForm() {
     resolver: zodResolver(formSchema)
   });
 
-  const createCause = async (data: FormTypes) => {
-    
-    const { title, description, email, contact, location } = data;
-
-    try {
-      
-      
-    } catch (error: any) {
-      if (error.response) {
-        // O servidor respondeu com um status diferente de 2xx
-        console.error('Error response:', error.response.data);
-      } else if (error.request) {
-        // A solicitação foi feita, mas nenhuma resposta foi recebida
-        console.error('Error request:', error.request);
-      } else {
-        // Algo aconteceu ao configurar a solicitação
-        console.error('Error message:', error.message);
-      }
-  }
-
-    // await api.post("/cause/create", {
-    //   userId,
-    //   title,
-    //   description,
-    //   email,
-    //   contact,
-    //   location,
-    // })
-    // .then(res => {
-    //   toast({
-    //     title: res.data.message
-    //   })
-
-    //   navigation.push(`/causa/${res.data.id}`);
-    // })
-    // .catch(err => {
-    //   toast({
-    //     title: err.message
-    //   });
-    // })
-  }
-
-  const handleChangeEvent = (items: TProps) => {
-    setImagesFile([...items.allEntries.filter((file) => file.status === 'success')]);
+  const handleChangeEvent = (event: OutputCollectionState) => {
+    const successFiles = event.successEntries.map(entry => entry.fileInfo);
+  
+    const validUrls = successFiles
+      .map(file => file.cdnUrl)
+      .filter((url): url is string => url !== null);
+  
+    setImagesUrl(validUrls);
   };
+
+  const createCause = async (data: FormTypes) => {
+    if(imageUrl.length > 0) {
+      setIsLoading(true);
+
+      const { title, description, email, contact, location } = data;
+
+      try {
+        const res = await api.post("/cause/create", {
+          title,
+          description,
+          email,
+          contact,
+          location,
+          expirationAt: date,
+          imagesUrl: imageUrl,
+        })
+        
+        toast({
+          title: res.data.message
+        })
+
+        navigation.push(`/causa/${res.data.id}`);
+      } catch(err: any) {
+        console.log(err)
+        toast({
+          title: err.message
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    toast({
+      title: "Insira uma imagem!"
+    })
+  }
 
   return(
     <form 
       onSubmit={handleSubmit(createCause)} 
       className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-8 md:rounded-xl"
     >
-      {/* <MediaPicker 
-        imageFile={imageFile} 
-        setImageFile={setImageFile}
-      /> */}
-
-      <div>
+      <div className="flex flex-col gap-2">
         <FileUploaderRegular
           imgOnly={true}
-          multipleMax={2}
+          multipleMax={1}
           sourceList="local, url"
           onChange={handleChangeEvent}
-          useCloudImageEditor={false}
+          useCloudImageEditor={true}
           maxLocalFileSizeBytes={10000000}
           classNameUploader="my-config uc-light"
           pubkey={process.env.NEXT_PUBLIC_UPLOADCARE_PUBLIC_KEY}
         />
 
-        {imagesFile.length > 0 && (
-          {imageFile.map((image) => (
+        {imageUrl && (
+          imageUrl.map(image => (
             <Image
               width={500}
-              height={500} 
-              src={image.cdnUrl}
-              alt={image.fileInfo.originalFilename}
+              height={500}
+              key={image}
+              src={image}
+              alt=""
+              className="rounded-2xl border shadow"
             />
-          ))}
+          ))
         )}
       </div>
 
@@ -159,32 +154,12 @@ export function CreateCauseForm() {
         </div>
 
         <div className="flex flex-col gap-1">
-          <div className="flex items-center gap-2">
-            <label htmlFor="location" className="label">
-              Datas
-            </label>
-
-            <Popover>
-              <PopoverTrigger>
-                <AlertCircle className="size-4 text-muted-foreground"/>
-              </PopoverTrigger>
-
-              <PopoverPortal>
-                <PopoverContent align="center" className="py-3 px-4 rounded-md bg-green-50 text-xs leading-none">
-                  As datas são usadas para definir a expiração da causa
-                </PopoverContent>
-              </PopoverPortal>
-            </Popover>
-          </div>
+          <label className="label">Data de expiração (Opcional)</label>
           
           <DatePicker 
             date={date} 
             setDate={setDate}
           />
-
-          {errors.location && (
-            <span className="text-sm text-red-500">{errors.location.message}</span>
-          )}
         </div>
 
         <div className="flex flex-col gap-1">
@@ -250,7 +225,7 @@ export function CreateCauseForm() {
           disabled={isLoading}
           className="disabled:opacity-90"
         >
-          {isLoading ? <LoaderCircle className="size-4"/> : "Criar causa"}
+          {isLoading ? <LoaderCircle className="size-4 animate-spin"/> : "Criar causa"}
         </Button>
       </div>
     </form>

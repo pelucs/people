@@ -79,11 +79,15 @@ export function ListAllCauses() {
                     className="rounded-xl overflow-hidden border hover:border-primary shadow relative
                     transition-colors bg-secondary"
                   >
-                    <Image 
-                      src={example} 
-                      alt="Exemplo" 
-                      className=""
-                    />
+                    <div className="aspect-video overflow-hidden flex items-center justify-start">
+                      <Image 
+                        width={500}
+                        height={500}
+                        src={cause.imagesUrl[0]} 
+                        alt="Exemplo" 
+                        className=""
+                      />
+                    </div>
 
                     <div className="py-5 px-6 space-y-5">
                       <div className="flex flex-col gap-1">

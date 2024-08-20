@@ -1,9 +1,7 @@
 "use client"
 
 import { api } from "@/api/axios";
-import { ptBR } from "date-fns/locale";
 import { Cause } from "@/types/cause";
-import { format } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { Loading } from "@/components/Loading";
 import { UpdateCauseDialog } from "./UpdateCauseDialog";
@@ -11,9 +9,10 @@ import { DeleteCauseDialog } from "./DeleteCauseDialog";
 import { useEffect, useState } from "react";
 import { Eye, Handshake, Plus } from "lucide-react";
 
-import example from "@/assets/example.jpg";
 import Link from "next/link";
 import Image from "next/image";
+import { Switch } from "@/components/ui/switch";
+import { Separator } from "@/components/ui/separator";
 
 export function ListOfCausesForAdmin() {
 
@@ -61,11 +60,11 @@ export function ListOfCausesForAdmin() {
         {!loading ? (
           <>
             {causes.length > 0 ? (
-              <div className="w-full grid grid-cols-1 md:grid-cols-4 gap-5">
+              <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-5">
                 {causes.map(cause => (
                   <div 
                     key={cause.id} 
-                    className="rounded-xl overflow-hidden border shadow relative group"
+                    className="rounded-xl overflow-hidden border shadow relative group flex flex-col"
                   >
                     <div 
                       className="py-1 px-2 flex items-center gap-1 text-xs text-muted-foreground 
@@ -73,46 +72,97 @@ export function ListOfCausesForAdmin() {
                       md:group-hover:opacity-100"
                     >
                       <Eye className="size-4"/>
-
                       4 visitas
                     </div>
 
-                    <Image 
-                      src={example} 
-                      alt="Exemplo" 
-                      className=""
-                    />
+                    <div className="aspect-video overflow-hidden flex items-center justify-start">
+                      <Image 
+                        width={500}
+                        height={500}
+                        src={cause.imagesUrl[0]} 
+                        alt="Exemplo" 
+                        className=""
+                      />
+                    </div>
 
-                    <div className="py-5 px-6 space-y-5">
-                      <div className="space-y-2">
-                        <h1 className="text-lg leading-none font-semibold">
-                          {cause.title}
-                        </h1>
+                    <div className="py-4 px-5 space-y-5">
+                      <h1 className="text-lg leading-none font-semibold">
+                        {cause.title}
+                      </h1>
 
-                        <p className="text-sm text-muted-foreground leading-tight">
-                          {cause.description}
-                        </p>
-                      </div>
+                      <Separator/>
 
-                      <div>
-                        <span className="text-xs text-muted-foreground">Registrada em</span>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <Button asChild size="icon" variant="outline">
+                            <Link href={`/causa/${cause.id}`}>
+                              <Eye className="size-4"/>
+                            </Link>
+                          </Button>
 
-                        <p className="font-medium leading-tight">
-                          {format(new Date(cause.createAt), "dd 'de' MMM, y", { locale: ptBR })}
-                        </p>
-                      </div>
+                          <UpdateCauseDialog cause={cause}/>
+                          <DeleteCauseDialog causeId={cause.id}/>
+                        </div>
 
-                      <div className="flex items-center gap-2">
-                        <Button asChild className="flex-1">
-                          <Link href={`/causa/${cause.id}`}>
-                            Visualizar
-                          </Link>
-                        </Button>
+                        <div className="flex items-center gap-2 text-sm">
+                          Privada
+                          
+                          <Switch
+                            defaultChecked={cause.isPublic}
+                          />
 
-                        <UpdateCauseDialog cause={cause}/>
-                        <DeleteCauseDialog causeId={cause.id}/>
+                          Pública
+                        </div>
                       </div>
                     </div>
+
+                    {/* <div className="py-5 px-6 flex flex-col gap-5 flex-grow">
+                      <div className="space-y-5">
+                        <div className="space-y-2">
+                          <h1 className="text-lg leading-none font-semibold">
+                            {cause.title}
+                          </h1>
+
+                          <p className="text-sm text-muted-foreground leading-tight">
+                            {cause.description}
+                          </p>
+                        </div>
+
+                        <div>
+                          <div>
+                            <span className="text-xs text-muted-foreground">Registrada em</span>
+                            <p className="text-sm">
+                              {format(new Date(cause.createAt), "dd 'de' MMM, y", { locale: ptBR })}
+                            </p>
+                          </div>
+
+                          {cause.expirationAt && (
+                            <div>
+                              <span className="text-xs text-muted-foreground">Expira em</span>
+                              <p className="text-sm">
+                                {subDays(new Date(cause.expirationAt), new Date().getDate()).getDate()} dias
+                              </p>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </div> */}
+
+                    {/* <div>
+                      <label>Tornar pública?</label>
+                      <Switch/>
+                    </div>
+
+                    <div className="px-6 pb-5 mt-auto flex items-center gap-2">
+                      <Button asChild className="flex-1">
+                        <Link href={`/causa/${cause.id}`}>
+                          Visualizar
+                        </Link>
+                      </Button>
+
+                      <UpdateCauseDialog cause={cause}/>
+                      <DeleteCauseDialog causeId={cause.id}/>
+                    </div> */}
                   </div>
                 ))}
               </div>

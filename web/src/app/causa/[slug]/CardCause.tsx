@@ -6,7 +6,7 @@ import example from "@/assets/example.jpg";
 import { api } from "@/api/axios";
 import { ptBR } from "date-fns/locale";
 import { Cause } from "@/types/cause";
-import { format } from "date-fns";
+import { format, subDays } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useParams } from "next/navigation";
@@ -23,6 +23,8 @@ export function CardCause() {
       try {
         const response = await api.get(`/cause/${slug}`);
         const data = response.data;
+
+        console.log(data)
 
         setCause(data);
       } catch(err) {
@@ -48,21 +50,21 @@ export function CardCause() {
       {cause ? (
         <div className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-4">
 
-          <div className="py-3 px-4 md:hidden flex items-center gap-2 rounded-md font-semibold text-sm text-primary bg-primary/10">
+          <div className="py-3 px-4 md:hidden flex items-center gap-2 rounded-xl font-semibold text-sm text-primary bg-primary/10">
             <ShieldCheck className="w-4 text-primary"/>
 
             Esta causa foi verificada!
           </div>
 
           <div className="space-y-5">
-            <div className="rounded-xl overflow-hidden aspect-video">
-              <Image 
-                src={example} 
-                alt=""
-                className="w-full"
-              />
-            </div>
-            
+            <Image 
+              alt=""
+              width={500}
+              height={500}
+              src={cause.imagesUrl[0]} 
+              className="w-full rounded-xl"
+            />
+
             <a 
               target="_blank"
               href="https://www.instagram.com/socioambiental_cg/" 
@@ -115,6 +117,15 @@ export function CardCause() {
                   {format(new Date(cause.createAt), "dd 'de' MMM, y", { locale: ptBR })}
                 </span>
               </div>
+
+              {cause.expirationAt && (
+                <div className="flex flex-col gap-1">
+                  <span className="label">Expira em</span>
+                  <p className="font-medium">
+                    {subDays(new Date(cause.expirationAt), new Date().getDate()).getDate()} dias
+                  </p>
+                </div>
+              )}
             </div>
 
             <div className="h-fit p-5 md:p-8 flex flex-col gap-5 rounded-xl bg-secondary border shadow">
@@ -124,7 +135,7 @@ export function CardCause() {
               </h1>
 
               <div className="grid grid-cols-2 gap-4">
-                <Button asChild className="h-14">
+                <Button asChild>
                   <a target="_blank" href={`https://api.whatsapp.com/send?phone=${
                     cause.contact.replace(/\D/g, '')
                   }`}>
@@ -132,7 +143,7 @@ export function CardCause() {
                   </a>
                 </Button>
 
-                <Button asChild className="h-14">
+                <Button asChild>
                   <a href={`mailto:${cause.email}`}>
                     Email
                   </a>

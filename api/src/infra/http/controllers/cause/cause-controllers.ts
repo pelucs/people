@@ -28,6 +28,7 @@ export class CauseController {
         location: z.string(),
         description: z.string(),
         expirationAt: z.coerce.date(),
+        imagesUrl: z.coerce.string().array(),
       })
       
       const data = bodySchema.parse(request.body);
@@ -39,6 +40,7 @@ export class CauseController {
         location: data.location,
         description: data.description,
         expirationAt: data.expirationAt,
+        imagesUrl: data.imagesUrl,
       });
 
       return reply.status(201).send({

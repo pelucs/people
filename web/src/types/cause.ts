@@ -6,5 +6,7 @@ export interface Cause {
   description: string;
   createAt: string;
   location: string;
-  userId: string;
+  expirationAt: Date;
+  isPublic: boolean;
+  imagesUrl: string[];
 }

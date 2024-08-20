@@ -25,7 +25,9 @@ model Cause {
   contact      String
   createAt     DateTime
   expirationAt DateTime?
+  isPublic     Boolean   @default(false)
   location     String
+  imagesUrl    String[]
 
   @@map("causes")
 }

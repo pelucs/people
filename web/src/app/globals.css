@@ -52,7 +52,7 @@
 }
 
 .label{
-  @apply text-sm font-medium text-zinc-400;
+  @apply text-sm;
 }
 
 .title {

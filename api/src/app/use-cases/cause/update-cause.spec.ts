@@ -2,7 +2,6 @@ import { InMemoryCauseRepositories } from "../../../../test/in-memory-cause-repo
 import { describe, expect, it } from "vitest";
 import { CreateCause } from "./create-cause";
 import { UpdateCause } from "./update-cause";
-import { randomUUID } from "node:crypto";
 
 describe("Update cause", () => {
   it("should be able to update a cause", async () => {
@@ -17,6 +16,7 @@ describe("Update cause", () => {
       email: "pedro@gmail.com",
       location: "Rua Doutor Paulo Roberto Mayer, 556",
       expirationAt:  new Date("20/08/2024"),
+      imagesUrl: ["teste.png"]
     });
 
     await updateCause.execute(cause.id, {

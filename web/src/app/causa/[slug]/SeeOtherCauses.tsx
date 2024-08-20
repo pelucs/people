@@ -11,7 +11,7 @@ import { useParams } from "next/navigation";
 import { ChevronRight } from "lucide-react";
 import { useEffect, useState } from "react";
 import { ptBR } from "date-fns/locale";
-import { format } from "date-fns";
+import { format, subDays } from "date-fns";
 
 export function SeeOtherCauses() {
   
@@ -46,44 +46,60 @@ export function SeeOtherCauses() {
         
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             {causes ? (
-              causes.slice(0,3).map((cause) => (
+              causes.slice(0, 4).map((cause) => (
                 <Link 
                   key={cause.id}
                   href={`/causa/${cause.id}`}
                   className="rounded-xl overflow-hidden border hover:border-primary shadow relative
-                  transition-colors"
+                  transition-colors bg-secondary"
                 >
-                  <Image 
-                    src={example} 
-                    alt="Exemplo" 
-                    className=""
-                  />
-
-                  <div className="py-5 px-6 space-y-5">
-                    <div className="flex flex-col gap-1">
-                      <h1 className="leading-tight text-lg font-semibold">
-                        {cause.title}
-                      </h1>
-
-                      <p className="text-sm text-muted-foreground leading-tight">
-                        {cause.description}
-                      </p>
-                    </div>
-
-                    <div>
-                      <span className="text-xs text-muted-foreground">Registrada em</span>
-
-                      <p className="font-medium leading-tight">
-                        {format(new Date(cause.createAt), "dd 'de' MMM, y", { locale: ptBR })}
-                      </p>
-                    </div>
-
-                    <span className="flex items-center gap-2 text-primary underline font-semibold">
-                      Ver mais informações
-
-                      <ChevronRight className="size-4"/>
-                    </span>
+                  <div className="aspect-video overflow-hidden flex items-center justify-start">
+                    <Image 
+                      width={500}
+                      height={500}
+                      src={cause.imagesUrl[0]} 
+                      alt="Exemplo" 
+                      className=""
+                    />
                   </div>
+
+                  <div className="py-5 px-6 flex flex-col gap-5 flex-grow">
+                    <div className="space-y-5">
+                      <div className="space-y-2">
+                        <h1 className="text-lg leading-none font-semibold">
+                          {cause.title}
+                        </h1>
+
+                        <p className="text-sm text-muted-foreground leading-tight">
+                          {cause.description}
+                        </p>
+                      </div>
+
+                      <div>
+                        <div>
+                          <span className="text-xs text-muted-foreground">Registrada em</span>
+                          <p className="text-sm">
+                            {format(new Date(cause.createAt), "dd 'de' MMM, y", { locale: ptBR })}
+                          </p>
+                        </div>
+
+                        {cause.expirationAt && (
+                          <div>
+                            <span className="text-xs text-muted-foreground">Expira em</span>
+                            <p className="text-sm">
+                              {subDays(new Date(cause.expirationAt), new Date().getDate()).getDate()} dias
+                            </p>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+
+                  <span className="px-6 pb-5 mt-auto flex items-center gap-2 text-primary underline">
+                    Ver mais informações
+
+                    <ChevronRight className="size-4"/>
+                  </span>
                 </Link>
               ))
             ) : (
