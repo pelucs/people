@@ -13,7 +13,7 @@ export function getUser(): User | null {
     return null
   }
 
-  const user: User = jwtDecode(token);
+  const user: User = jwtDecode<User>(token);
 
   return user;
 }

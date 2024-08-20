@@ -22,18 +22,6 @@ export class InMemoryCauseRepositories implements CauseRepositories {
     return this.causes;
   }
 
-  async findCausesByUserId(userId: string): Promise<Cause[]> {
-    const causes = this.causes.filter(
-      (cause) => cause.userId === userId
-    );
-
-    if(!causes) {
-      throw new Error("Causa não encontrada")
-    }
-
-    return causes;
-  }
-
   async create(cause: Cause): Promise<void> {
     this.causes.push(cause);
   }

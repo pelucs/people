@@ -7,6 +7,8 @@ import { GetCauseById } from "@app/use-cases/cause/get-cause-by-id";
 import { CauseNotFoundError } from "@app/exceptions/cause-not-found-error";
 import { CauseViewModelMapper } from "@infra/http/view-models/cause-view-model";
 import { FastifyReply, FastifyRequest } from "fastify";
+import { PublishCause } from "@app/use-cases/cause/publish-cause";
+import { UnPublishCause } from "@app/use-cases/cause/unpublish-cause";
 
 export class CauseController {
 
@@ -16,6 +18,8 @@ export class CauseController {
     private getCauseById: GetCauseById,
     private updateCause: UpdateCause,
     private deleteCause: DeleteCause,
+    private publishCause: PublishCause,
+    private unPublishCause: UnPublishCause,
   ) {}
 
   // Criação de uma causa
@@ -65,20 +69,78 @@ export class CauseController {
     }
   }
 
+  // Resgatando todas as causas públicas
+  async allPublicCauses(reply: FastifyReply) {
+    try {
+      const { causes } = await this.getAllCauses.execute();
+      const publicCauses = causes.filter(cause => cause.isPublic === true);
+
+      reply.status(200).send(
+        publicCauses.map(cause => CauseViewModelMapper.toHttp(cause))
+      );
+    } catch(err) {
+      reply.status(400).send(err)
+    }
+  }
+
   // Regatando causa única
   async causeById(request: FastifyRequest, reply: FastifyReply) {
     try {
       const paramsSchema = z.object({
-        id: z.string(),
+        causeId: z.string(),
       });
 
-      const { id } = paramsSchema.parse(request.params);
+      const { causeId } = paramsSchema.parse(request.params);
 
-      const { cause } = await this.getCauseById.execute({ id });
+      const { cause } = await this.getCauseById.execute({ causeId });
 
       reply.status(200).send(CauseViewModelMapper.toHttp(cause));
     } catch(err) {
       reply.status(404).send("Causa não encontrada")
+    }
+  }
+
+  // Tornando pública uma causa
+  async publish(request: FastifyRequest, reply: FastifyReply) {
+    try {
+      const paramsSchema = z.object({
+        causeId: z.string(),
+      });
+
+      const { causeId } = paramsSchema.parse(request.params);
+      await this.publishCause.execute({ causeId });
+
+      reply.status(200).send()
+    } catch(err) {
+      if(err instanceof CauseNotFoundError) {
+        return reply.status(404).send({ message: err.message });
+      }
+
+      return reply.status(404).send({
+        message: err || "Erro inesprado"
+      });
+    }
+  }
+
+  // Tornando pública uma causa
+  async unPublish(request: FastifyRequest, reply: FastifyReply) {
+    try {
+      const paramsSchema = z.object({
+        causeId: z.string()
+      });
+
+      const { causeId } = paramsSchema.parse(request.params);
+      await this.unPublishCause.execute({ causeId });
+
+      reply.status(200).send()
+    } catch(err) {
+      if(err instanceof CauseNotFoundError) {
+        return reply.status(404).send({ message: err.message });
+      }
+
+      return reply.status(404).send({
+        message: err || "Erro inesprado"
+      });
     }
   }
 
@@ -94,13 +156,13 @@ export class CauseController {
       });
 
       const paramsSchema = z.object({
-        id: z.string()
+        causeId: z.string()
       });
 
-      const { id } = paramsSchema.parse(request.params);
+      const { causeId } = paramsSchema.parse(request.params);
       const data = bodySchema.parse(request.body);
 
-      await this.updateCause.execute(id, {
+      await this.updateCause.execute(causeId, {
         title: data.title,
         description: data.description,
         location: data.location,

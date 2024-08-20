@@ -57,6 +57,16 @@ export class Cause {
     this.props.imagesUrl = data.imagesUrl ?? this.props.imagesUrl;
   }
 
+  // Causa privada
+  public publish() {
+    this.props.isPublic = true;
+  }
+
+  // Causa pública
+  public unPublish() {
+    this.props.isPublic = false;
+  }
+
   public get id() { return this._id }
   public get title() { return this.props.title}
   public get email() { return this.props.email}

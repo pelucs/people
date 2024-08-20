@@ -1,19 +1,22 @@
 "use client"
 
 import Image from "next/image";
-import example from "@/assets/example.jpg";
 
 import { api } from "@/api/axios";
 import { ptBR } from "date-fns/locale";
 import { Cause } from "@/types/cause";
-import { format, subDays } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useParams } from "next/navigation";
+import { format, subDays } from "date-fns";
 import { useEffect, useState } from "react";
 import { BellPlus, Share2, ShieldCheck } from "lucide-react";
 
-export function CardCause() {
+interface CardCauseProps {
+  user: { id: string, name: string } | null
+} 
+
+export function CardCause({ user }: CardCauseProps) {
 
   const { slug } = useParams<{slug : string }>();
   const [cause, setCause] = useState<Cause>();
@@ -24,8 +27,6 @@ export function CardCause() {
         const response = await api.get(`/cause/${slug}`);
         const data = response.data;
 
-        console.log(data)
-
         setCause(data);
       } catch(err) {
         console.log(err)
@@ -35,7 +36,7 @@ export function CardCause() {
     getCause();
   }, []);
 
-  // Função opara compartilhar
+  // Função para compartilhar
   const share = async (url: string) => {
     const shareData = {
       title: cause?.title,
@@ -49,14 +50,13 @@ export function CardCause() {
     <div>
       {cause ? (
         <div className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-4">
-
           <div className="py-3 px-4 md:hidden flex items-center gap-2 rounded-xl font-semibold text-sm text-primary bg-primary/10">
             <ShieldCheck className="w-4 text-primary"/>
 
             Esta causa foi verificada!
           </div>
 
-          <div className="space-y-5">
+          <div className="space-y-5 sticky top-10">
             <Image 
               alt=""
               width={500}
@@ -86,9 +86,18 @@ export function CardCause() {
 
             <div className="p-5 md:p-8 flex flex-col gap-4 rounded-xl bg-secondary border shadow">
               <div className="flex items-start justify-between gap-5">
-                <h1 className="text-2xl font-bold leading-none">
-                  {cause.title}
-                </h1>
+                <div className="flex flex-col gap-2">
+                  <h1 className="text-2xl font-bold leading-none">
+                    {cause.title}
+                  </h1>
+
+                  {user && (
+                    <span className="w-fit text-xs py-1 px-2 rounded text-primary bg-primary/10">
+                      {cause.isPublic ? "Pública" : "Privada"}
+                    </span>
+                  )}
+                </div>
+                
 
                 <Button 
                   size="sm" 

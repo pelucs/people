@@ -15,10 +15,10 @@ export class UpdateCause {
     private repository: CauseRepositories
   ) {}
 
-  async execute(id: string, request: UpdateCauseProps) {
+  async execute(causeId: string, request: UpdateCauseProps) {
     const { title, description, location, email, contact } = request;
 
-    const cause = await this.repository.getCauseById(id);
+    const cause = await this.repository.getCauseById(causeId);
 
     if(!cause) {
       throw new CauseNotFoundError()

@@ -43,26 +43,14 @@ export class PrismaCauseRepositories implements CauseRepositories {
 
   // Atualizando informações de uma causa
   async save(cause: Cause): Promise<void> {
-    const { 
-      id,
-      title, 
-      description, 
-      location, 
-      email, 
-      contact,
-    } = PrismaCauseMappers.toPrisma(cause);
+    const raw = PrismaCauseMappers.toPrisma(cause);
+    const { id, ...data } = raw;
 
     await prisma.cause.update({
       where: {
         id,
       },
-      data: {
-        title, 
-        description, 
-        location, 
-        email, 
-        contact,
-      },
+      data,
     });
   }
 

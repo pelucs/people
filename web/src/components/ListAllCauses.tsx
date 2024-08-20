@@ -23,7 +23,7 @@ export function ListAllCauses() {
   useEffect(() => {
     const getCauses = async () => {
       try {
-        const response = await api.get("/causes");
+        const response = await api.get("/causes/public");
         setCauses(response.data);
       } catch(err) {
         console.log(err)
@@ -84,8 +84,7 @@ export function ListAllCauses() {
                         width={500}
                         height={500}
                         src={cause.imagesUrl[0]} 
-                        alt="Exemplo" 
-                        className=""
+                        alt="" 
                       />
                     </div>
 

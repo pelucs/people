@@ -1,7 +1,7 @@
 import { CauseRepositories } from "@app/repositories/causeRepositories";
 
 interface GetCauseByIdProps {
-  id: string;
+  causeId: string;
 }
 
 export class GetCauseById {
@@ -11,9 +11,9 @@ export class GetCauseById {
   ) {}
 
   async execute(request: GetCauseByIdProps) {
-    const { id } = request;
+    const { causeId } = request;
 
-    const cause = await this.repository.getCauseById(id);
+    const cause = await this.repository.getCauseById(causeId);
 
     if(!cause) {
       throw new Error("Causa não encontrada")

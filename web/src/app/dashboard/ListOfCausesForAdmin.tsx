@@ -7,16 +7,22 @@ import { Loading } from "@/components/Loading";
 import { UpdateCauseDialog } from "./UpdateCauseDialog";
 import { DeleteCauseDialog } from "./DeleteCauseDialog";
 import { useEffect, useState } from "react";
-import { Eye, Handshake, Plus } from "lucide-react";
+import { Eye, Handshake, Plus, ScanEye, ScanLine } from "lucide-react";
 
 import Link from "next/link";
 import Image from "next/image";
 import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
+import { toast } from "@/components/ui/use-toast";
+import { useRouter } from "next/navigation";
 
 export function ListOfCausesForAdmin() {
 
+  const navigation = useRouter();
+
   const [causes, setCauses] = useState<Cause[]>([]);
+
+  const [isPublicChange, setIsPublicChange] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
@@ -34,10 +40,30 @@ export function ListOfCausesForAdmin() {
     getCauses();
   }, []);
 
+  const handlePublishCause = async (state: boolean, causeId: string) => {
+    if(state) {
+      await api.put(`/cause/${causeId}/unpublish`)
+
+      toast({
+        title: "Esta causa está privada!"
+      })
+
+      navigation.refresh();
+    } else {
+      await api.put(`/cause/${causeId}/publish`)
+
+      toast({
+        title: "Esta causa está pública!"
+      })
+
+      navigation.refresh();
+    }
+  }
+
   return(
     <div className="w-full flex flex-col gap-8">
       <div className="grid grid-cols-3 gap-5">
-        <div className="w-full py-4 px-5 flex flex-col gap-2 rounded-md bg-secondary border shadow">
+        <div className="w-full py-4 px-5 flex flex-col gap-2 rounded-md border shadow">
           <div className="flex items-center justify-between">
             <h1 className="text-sm text-muted-foreground font-medium">Causas registradas</h1>
             <Handshake className="size-4 text-muted-foreground"/>
@@ -48,8 +74,27 @@ export function ListOfCausesForAdmin() {
           </strong>
         </div>
 
-        <div className="w-full py-4 px-5 rounded-md bg-secondary border shadow"/>
-        <div className="w-full py-4 px-5 rounded-md bg-secondary border shadow"/>
+        <div className="w-full py-4 px-5 flex flex-col gap-2 rounded-md border shadow">
+          <div className="flex items-center justify-between">
+            <h1 className="text-sm text-muted-foreground font-medium">Causas em aberto</h1>
+            <ScanEye className="size-4 text-muted-foreground"/>
+          </div>
+
+          <strong className="text-4xl font-bold">
+            {causes.length > 9 ? causes.length : "0" + causes.length}
+          </strong>
+        </div>
+
+        <div className="w-full py-4 px-5 flex flex-col gap-2 rounded-md border shadow">
+          <div className="flex items-center justify-between">
+            <h1 className="text-sm text-muted-foreground font-medium">Causas expiradas</h1>
+            <ScanLine className="size-4 text-muted-foreground"/>
+          </div>
+
+          <strong className="text-4xl font-bold">
+            {causes.length > 9 ? causes.length : "0" + causes.length}
+          </strong>
+        </div>
       </div>
 
       <div className="space-y-4">
@@ -80,13 +125,13 @@ export function ListOfCausesForAdmin() {
                         width={500}
                         height={500}
                         src={cause.imagesUrl[0]} 
-                        alt="Exemplo" 
-                        className=""
+                        alt="" 
+                        className="w-full"
                       />
                     </div>
 
                     <div className="py-4 px-5 space-y-5">
-                      <h1 className="text-lg leading-none font-semibold">
+                      <h1 className="text-lg leading-none font-semibold truncate">
                         {cause.title}
                       </h1>
 
@@ -108,7 +153,9 @@ export function ListOfCausesForAdmin() {
                           Privada
                           
                           <Switch
+                            // checked={isPublicChange}
                             defaultChecked={cause.isPublic}
+                            onCheckedChange={() => handlePublishCause(cause.isPublic, cause.id)}
                           />
 
                           Pública

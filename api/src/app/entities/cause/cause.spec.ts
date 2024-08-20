@@ -1,5 +1,4 @@
 import { Cause } from "./cause";
-import { randomUUID } from "crypto";
 import { describe, it, expect } from "vitest";
 
 describe("Create cause", () => {

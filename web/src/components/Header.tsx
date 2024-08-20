@@ -47,32 +47,6 @@ export function Header(){
             <Search className="size-4"/>
           </Button>
 
-          {/* {user && (
-            <>
-              <Button 
-                asChild 
-                className="h-8 gap-2"
-              >
-                <Link href="/dashboard">
-                  <LayoutGrid className="size-4"/>
-
-                  Dashboard
-                </Link>
-              </Button>
-
-              <Button 
-                asChild 
-                size="icon" 
-                variant="destructive"
-                className="size-8 gap-2"
-              >
-                <Link href="/api/auth/logout">
-                  <LogOut className="size-4"/>
-                </Link>
-              </Button>
-            </>
-          )} */}
-
           {user && (
             <Popover>
               <Button 
