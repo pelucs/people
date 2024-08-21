@@ -1,9 +1,9 @@
-import { Inter, Anek_Gujarati } from "next/font/google";
+import { Inter_Tight, Anek_Gujarati } from "next/font/google";
 import { Toaster } from "@/components/ui/toaster";
 import type { Metadata } from "next";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter"});
+const inter = Inter_Tight({ subsets: ["latin"], variable: "--font-inter"});
 const anek = Anek_Gujarati({ subsets: ["latin"], weight: "700", variable: "--font-alt"});
 
 export const metadata: Metadata = {

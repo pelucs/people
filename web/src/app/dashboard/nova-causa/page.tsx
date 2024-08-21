@@ -15,18 +15,18 @@ export default () => {
     <div className="w-full">
       <Header/>
 
-      <div className="mt-10 px-5 md:px-14">
+      <div className="mt-5 min-h-screen px-5 md:px-14">
         <div>
-          <h1 className="text-2xl font-bold">Criar nova causa</h1>
+          <h1 className="text-4xl font-bold">Criar nova causa</h1>
 
-          <span className="text-sm text-muted-foreground font-semibold">
+          <span className="text-sm text-muted-foreground">
             Preencha todos os campos corretamente
           </span>
         </div>
 
         <CreateCauseForm/>
       </div>
-
+      
       <Footer/>
     </div>
   );

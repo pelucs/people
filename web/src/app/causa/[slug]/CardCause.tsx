@@ -87,7 +87,7 @@ export function CardCause({ user }: CardCauseProps) {
             <div className="p-5 md:p-8 flex flex-col gap-4 rounded-xl bg-secondary border shadow">
               <div className="flex items-start justify-between gap-5">
                 <div className="flex flex-col gap-2">
-                  <h1 className="text-2xl font-bold leading-none">
+                  <h1 className="text-2xl font-bold leading-tight">
                     {cause.title}
                   </h1>
 

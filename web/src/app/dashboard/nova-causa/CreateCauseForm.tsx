@@ -85,45 +85,20 @@ export function CreateCauseForm() {
       } finally {
         setIsLoading(false);
       }
+    } else {
+      toast({
+        title: "Insira uma imagem!"
+      })
     }
 
-    toast({
-      title: "Insira uma imagem!"
-    })
   }
 
   return(
     <form 
       onSubmit={handleSubmit(createCause)} 
-      className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-8 md:rounded-xl"
+      className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-5 md:rounded-xl"
     >
-      <div className="flex flex-col gap-2">
-        <FileUploaderRegular
-          imgOnly={true}
-          multipleMax={1}
-          sourceList="local, url"
-          onChange={handleChangeEvent}
-          useCloudImageEditor={true}
-          maxLocalFileSizeBytes={10000000}
-          classNameUploader="my-config uc-light"
-          pubkey={process.env.NEXT_PUBLIC_UPLOADCARE_PUBLIC_KEY}
-        />
-
-        {imageUrl && (
-          imageUrl.map(image => (
-            <Image
-              width={500}
-              height={500}
-              key={image}
-              src={image}
-              alt=""
-              className="rounded-2xl border shadow"
-            />
-          ))
-        )}
-      </div>
-
-      <div className="flex flex-col gap-3">
+      <div className="py-5 px-6 rounded-xl border shadow flex flex-col gap-3">
         <div className="flex flex-col gap-1">
           <label htmlFor="title" className="label">Título</label>
           <input 
@@ -227,6 +202,38 @@ export function CreateCauseForm() {
         >
           {isLoading ? <LoaderCircle className="size-4 animate-spin"/> : "Criar causa"}
         </Button>
+      </div>
+
+      <div className="py-5 px-6 rounded-xl border shadow flex flex-col gap-2">
+        <div className="space-y-4">
+          <h1 className="text-2xl font-bold leading-none  ">Insira uma imagem</h1>
+
+          <FileUploaderRegular
+            imgOnly={true}
+            multipleMax={1}
+            sourceList="local, url"
+            onChange={handleChangeEvent}
+            useCloudImageEditor={true}
+            maxLocalFileSizeBytes={10000000}
+            classNameUploader="my-config uc-light"
+            pubkey={process.env.NEXT_PUBLIC_UPLOADCARE_PUBLIC_KEY}
+          />
+        </div>
+
+        {imageUrl ? (
+          imageUrl.map(image => (
+            <Image
+              width={500}
+              height={500}
+              key={image}
+              src={image}
+              alt=""
+              className="w-full rounded-xl border shadow"
+            />
+          ))
+        ) : (
+          <div className="aspect-video border border-dashed border-xl"/>
+        )}
       </div>
     </form>
   );

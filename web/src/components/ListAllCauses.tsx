@@ -13,6 +13,7 @@ import { Loading } from "./Loading";
 import { Separator } from "./ui/separator";
 import { useEffect, useState } from "react";
 import { ChevronRight, Plus, Search } from "lucide-react";
+import { textFormated } from "@/helpers/regular-expression";
 
 export function ListAllCauses() {
 
@@ -36,9 +37,12 @@ export function ListAllCauses() {
   }, []);
 
   const filteredCausesBySearch = search.length > 0 ?
-    causes.filter(cause => cause.id.toLowerCase().includes(search.toLowerCase()) || cause.description.toLowerCase().includes(search.toLowerCase()) ||
-    cause.title.toLowerCase().includes(search.toLowerCase()) || cause.location.toLowerCase().includes(search.toLowerCase()))
-    : causes
+    causes.filter(cause => (
+      cause.id.includes(textFormated(search)) 
+      || textFormated(cause.description).includes(textFormated(search)) 
+      || textFormated(cause.title).includes(textFormated(search)) 
+      || textFormated(cause.location).includes(textFormated(search)))
+    ) : causes
 
   return(
     <div id="causas" className="mt-5">  

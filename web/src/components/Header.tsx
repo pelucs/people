@@ -23,7 +23,7 @@ export function Header(){
       </Link>
 
       <div className="flex items-center gap-5">
-        <nav className="hidden md:flex items-center gap-5 text-sm font-semibold text-muted-foreground">
+        <nav className="hidden md:flex items-center gap-5 text-sm text-muted-foreground">
           <Link href="/" className="hover:text-foreground transition-colors">
             Causas
           </Link>

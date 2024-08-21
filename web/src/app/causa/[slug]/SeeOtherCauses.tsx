@@ -22,7 +22,7 @@ export function SeeOtherCauses() {
   useEffect(() => {
     const getCauses = async () => {
       try {
-        const response = await api.get(`/causes`);
+        const response = await api.get(`/causes/public`);
         const data: Cause[] = response.data;
 
         const filteredCauses = data.filter(cause => cause.id !== slug);

@@ -1,28 +1,28 @@
 "use client"
 
+import Link from "next/link";
+import Image from "next/image";
+
 import { api } from "@/api/axios";
 import { Cause } from "@/types/cause";
+import { toast } from "@/components/ui/use-toast";
+import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
 import { Loading } from "@/components/Loading";
+import { Separator } from "@/components/ui/separator";
+import { useRouter } from "next/navigation";
 import { UpdateCauseDialog } from "./UpdateCauseDialog";
 import { DeleteCauseDialog } from "./DeleteCauseDialog";
 import { useEffect, useState } from "react";
-import { Eye, Handshake, Plus, ScanEye, ScanLine } from "lucide-react";
+import { Clock, Eye, Handshake, Plus, ScanEye, ScanLine } from "lucide-react";
+import { isPast } from "date-fns";
 
-import Link from "next/link";
-import Image from "next/image";
-import { Switch } from "@/components/ui/switch";
-import { Separator } from "@/components/ui/separator";
-import { toast } from "@/components/ui/use-toast";
-import { useRouter } from "next/navigation";
 
 export function ListOfCausesForAdmin() {
 
   const navigation = useRouter();
 
   const [causes, setCauses] = useState<Cause[]>([]);
-
-  const [isPublicChange, setIsPublicChange] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
@@ -60,39 +60,54 @@ export function ListOfCausesForAdmin() {
     }
   }
 
+  const amountPublicCauses = causes.filter(cause => cause.isPublic === true).length;
+  const amountPrivateCauses = causes.filter(cause => cause.isPublic === false).length;
+  const pastCauses = causes.filter(cause => isPast(new Date(cause.expirationAt)) === true).length;
+
   return(
     <div className="w-full flex flex-col gap-8">
-      <div className="grid grid-cols-3 gap-5">
+      <div className="grid grid-cols-4 gap-5">
         <div className="w-full py-4 px-5 flex flex-col gap-2 rounded-md border shadow">
           <div className="flex items-center justify-between">
-            <h1 className="text-sm text-muted-foreground font-medium">Causas registradas</h1>
+            <h1 className="text-sm text-muted-foreground">Causas registradas</h1>
             <Handshake className="size-4 text-muted-foreground"/>
           </div>
 
-          <strong className="text-4xl font-bold">
-            {causes.length > 9 ? causes.length : "0" + causes.length}
+          <strong className="text-2xl font-bold">
+            {causes.length}
           </strong>
         </div>
 
         <div className="w-full py-4 px-5 flex flex-col gap-2 rounded-md border shadow">
           <div className="flex items-center justify-between">
-            <h1 className="text-sm text-muted-foreground font-medium">Causas em aberto</h1>
+            <h1 className="text-sm text-muted-foreground">Causas públicas</h1>
             <ScanEye className="size-4 text-muted-foreground"/>
           </div>
 
-          <strong className="text-4xl font-bold">
-            {causes.length > 9 ? causes.length : "0" + causes.length}
+          <strong className="text-2xl font-bold">
+            {amountPublicCauses}
           </strong>
         </div>
 
         <div className="w-full py-4 px-5 flex flex-col gap-2 rounded-md border shadow">
           <div className="flex items-center justify-between">
-            <h1 className="text-sm text-muted-foreground font-medium">Causas expiradas</h1>
+            <h1 className="text-sm text-muted-foreground">Causas privadas</h1>
             <ScanLine className="size-4 text-muted-foreground"/>
           </div>
 
-          <strong className="text-4xl font-bold">
-            {causes.length > 9 ? causes.length : "0" + causes.length}
+          <strong className="text-2xl font-bold">
+            {amountPrivateCauses}
+          </strong>
+        </div>
+
+        <div className="w-full py-4 px-5 flex flex-col gap-2 rounded-md border shadow">
+          <div className="flex items-center justify-between">
+            <h1 className="text-sm text-muted-foreground">Causas expiradas</h1>
+            <Clock className="size-4 text-muted-foreground"/>
+          </div>
+
+          <strong className="text-2xl font-bold">
+            {pastCauses}
           </strong>
         </div>
       </div>
@@ -109,17 +124,8 @@ export function ListOfCausesForAdmin() {
                 {causes.map(cause => (
                   <div 
                     key={cause.id} 
-                    className="rounded-xl overflow-hidden border shadow relative group flex flex-col"
+                    className="rounded-xl overflow-hidden border shadow group flex flex-col"
                   >
-                    <div 
-                      className="py-1 px-2 flex items-center gap-1 text-xs text-muted-foreground 
-                      bg-secondary rounded-md absolute top-2 left-2 md:opacity-0 md:transition-opacity
-                      md:group-hover:opacity-100"
-                    >
-                      <Eye className="size-4"/>
-                      4 visitas
-                    </div>
-
                     <div className="aspect-video overflow-hidden flex items-center justify-start">
                       <Image 
                         width={500}

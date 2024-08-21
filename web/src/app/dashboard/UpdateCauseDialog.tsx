@@ -1,12 +1,15 @@
 "use client"
 
+import clsx from "clsx";
+
 import { z } from "zod";
 import { api } from "@/api/axios";
 import { toast } from "@/components/ui/use-toast";
 import { Cause } from "@/types/cause";
 import { Button } from "@/components/ui/button";
-import { Pencil } from "lucide-react";
+import { Hash, Pencil } from "lucide-react";
 import { useForm } from "react-hook-form";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Separator } from "@/components/ui/separator";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -17,20 +20,22 @@ import {
   DialogContent,
   DialogOverlay,
   DialogClose,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
 } from "@/components/ui/dialog";
-import { useState } from "react";
-import clsx from "clsx";
 
 interface UpdateCauseDialogProps {
   cause: Cause;
 }
 
 const formSchema = z.object({
-  title: z.string().nonempty("Campo obrigatório"),
-  email: z.string().email("Email inválido"),
-  contact: z.string().nonempty("Campo obrigatório"),
-  location: z.string().nonempty("Campo obrigatório"),
-  description: z.string().max(500, "Descrição deve conter no máximo 500 caracteres").nonempty("Campo obrigatório"),
+  title: z.string({ message: "Campo obrigatório" }),
+  email: z.string({ message: "Campo obrigatório" }).email({ message: "Email inválido" }),
+  contact: z.string({ message: "Campo obrigatório" }),
+  location: z.string({ message: "Campo obrigatório" }),
+  description: z.string({ message: "Campo obrigatório" })
+    .max(500, "Descrição deve conter no máximo 500 caracteres"),
 });
 
 type FormTypes = z.infer<typeof formSchema>;
@@ -83,12 +88,17 @@ export function UpdateCauseDialog({ cause }: UpdateCauseDialogProps) {
         <DialogOverlay/>
 
         <DialogContent className="max-w-2xl flex flex-col gap-5">
-          <div>
-            <h1 className="text-2xl font-bold">Editar causa</h1>
-            <span>
-              #ID: {cause.id}
-            </span>
-          </div>
+          <DialogHeader>
+            <DialogTitle>
+              Atualizar dados
+            </DialogTitle>
+
+            <DialogDescription className="w-fit text-xs flex items-center gap-1 py-1 px-2 rounded bg-secondary">
+              <Hash className="size-3"/>
+              
+              {cause.id}
+            </DialogDescription>
+          </DialogHeader>
 
           <Separator orientation="horizontal" className="h-[1px] bg-zinc-200"/>
             
@@ -151,7 +161,7 @@ export function UpdateCauseDialog({ cause }: UpdateCauseDialogProps) {
                   Salvar alterações
                 </Button>
 
-                <Button asChild className="w-full max-w-96 h-14 rounded-md text-black bg-zinc-200 hover:bg-zinc-300">
+                <Button asChild className="w-full max-w-96 rounded-md text-black bg-zinc-200 hover:bg-zinc-300">
                   <DialogClose>
                     Cancelar
                   </DialogClose>
