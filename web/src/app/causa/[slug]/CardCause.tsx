@@ -6,7 +6,7 @@ import { api } from "@/api/axios";
 import { ptBR } from "date-fns/locale";
 import { Cause } from "@/types/cause";
 import { Button } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
+import { Loading } from "@/components/Loading";
 import { useParams } from "next/navigation";
 import { format, subDays } from "date-fns";
 import { useEffect, useState } from "react";
@@ -25,9 +25,10 @@ export function CardCause({ user }: CardCauseProps) {
     const getCause = async () => {
       try {
         const response = await api.get(`/cause/${slug}`);
-        const data = response.data;
+        const data: Cause = response.data;
 
         setCause(data);
+        document.title = "Socio - ".concat(data.title);
       } catch(err) {
         console.log(err)
       }
@@ -56,7 +57,7 @@ export function CardCause({ user }: CardCauseProps) {
             Esta causa foi verificada!
           </div>
 
-          <div className="space-y-5 sticky top-10">
+          <div className="sticky top-10 space-y-5">
             <Image 
               alt=""
               width={500}
@@ -98,7 +99,6 @@ export function CardCause({ user }: CardCauseProps) {
                   )}
                 </div>
                 
-
                 <Button 
                   size="sm" 
                   className="gap-2"
@@ -112,7 +112,7 @@ export function CardCause({ user }: CardCauseProps) {
 
               <div className="flex flex-col gap-1">
                 <span className="label">Descrição</span>
-                <span className="font-medium leading-tight">{cause.description}</span>
+                <p className="whitespace-pre-line font-medium leading-tight">{cause.description}</p>
               </div>
 
               <div className="flex flex-col gap-1">
@@ -162,10 +162,7 @@ export function CardCause({ user }: CardCauseProps) {
           </div>
         </div>
       ) : (
-        <div className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-5">
-          <Skeleton className="h-[405px] rounded-md bg-white"/>
-          <Skeleton className="h-48 rounded-md bg-white"/>
-        </div>
+        <Loading/>
       )}
     </div>
   );

@@ -70,9 +70,15 @@ export class CauseController {
   }
 
   // Resgatando todas as causas públicas
-  async allPublicCauses(reply: FastifyReply) {
+  async allPublicCauses(request: FastifyRequest, reply: FastifyReply) {
     try {
-      const { causes } = await this.getAllCauses.execute();
+      const paramsSchema = z.object({
+        query: z.string().nullish(),
+      });
+
+      const { query } = paramsSchema.parse(request.query); 
+
+      const { causes } = await this.getAllCauses.execute(query);
       const publicCauses = causes.filter(cause => cause.isPublic === true);
 
       reply.status(200).send(
@@ -153,6 +159,7 @@ export class CauseController {
         email: z.string().nullish(),
         contact: z.string().nullish(),
         location: z.string().nullish(),
+        imagesUrl: z.string().array().nullish(),
       });
 
       const paramsSchema = z.object({
@@ -162,13 +169,20 @@ export class CauseController {
       const { causeId } = paramsSchema.parse(request.params);
       const data = bodySchema.parse(request.body);
 
-      await this.updateCause.execute(causeId, {
-        title: data.title,
-        description: data.description,
-        location: data.location,
-        contact: data.contact,
-        email: data.email,
-      });
+      const filteredData = Object.fromEntries(
+        Object.entries({
+          title: data.title,
+          description: data.description,
+          location: data.location,
+          contact: data.contact,
+          email: data.email,
+          imagesUrl: data.imagesUrl,
+        }).filter(([_, value]) => value !== undefined && value !== null && value !== '')
+      );
+
+      console.log(filteredData);
+
+      await this.updateCause.execute(causeId, filteredData);
 
       reply.status(200).send("Causa atualizada com sucesso")
     } catch(err) {

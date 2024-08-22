@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import example from "@/assets/example.jpg";
 
 import { api } from "@/api/axios";
 import { ptBR } from "date-fns/locale";
@@ -11,9 +10,9 @@ import { Button } from "./ui/button";
 import { format } from "date-fns";
 import { Loading } from "./Loading";
 import { Separator } from "./ui/separator";
+import { textFormated } from "@/helpers/regular-expression";
 import { useEffect, useState } from "react";
 import { ChevronRight, Plus, Search } from "lucide-react";
-import { textFormated } from "@/helpers/regular-expression";
 
 export function ListAllCauses() {
 
@@ -49,7 +48,7 @@ export function ListAllCauses() {
       
       <div className="space-y-10">
         <div className="flex flex-col items-center justify-center gap-4">
-          <h1 className="text-3xl font-bold">O que você está buscando?</h1>
+          <h1 className="text-3xl text-center font-bold leading-tight">O que você está buscando?</h1>
           
           <div className="w-full max-w-xl relative">
             <Search className="size-6 text-muted-foreground absolute top-5 left-5"/>
@@ -99,7 +98,7 @@ export function ListAllCauses() {
                         </h1>
 
                         <p className="text-sm text-muted-foreground leading-tight">
-                          {cause.description}
+                          {cause.description.substring(0, 100).concat("...")}
                         </p>
                       </div>
 

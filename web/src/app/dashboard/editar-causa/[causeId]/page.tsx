@@ -1,7 +1,7 @@
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { getUser } from "@/lib/auth";
-import { CreateCauseForm } from "./CreateCauseForm";
+import { EditCauseForm } from "./EditCauseForm";
 
 export default () => {
 
@@ -17,14 +17,14 @@ export default () => {
 
       <div className="mt-5 min-h-screen px-5 md:px-14">
         <div>
-          <h1 className="text-2xl font-bold">Criar nova causa</h1>
+          <h1 className="text-2xl font-bold">Editar causa</h1>
 
           <span className="text-sm text-muted-foreground">
             Preencha todos os campos corretamente
           </span>
         </div>
 
-        <CreateCauseForm/>
+        <EditCauseForm/>
       </div>
       
       <Footer/>

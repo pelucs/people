@@ -7,6 +7,7 @@ export interface UpdateCauseProps {
   location?: string | null | undefined;
   contact?: string | null | undefined;
   email?: string | null | undefined;
+  imagesUrl?: string[] | null | undefined;
 }
 
 export class UpdateCause {
@@ -16,7 +17,7 @@ export class UpdateCause {
   ) {}
 
   async execute(causeId: string, request: UpdateCauseProps) {
-    const { title, description, location, email, contact } = request;
+    const { title, description, location, email, contact, imagesUrl } = request;
 
     const cause = await this.repository.getCauseById(causeId);
 
@@ -30,6 +31,7 @@ export class UpdateCause {
       location, 
       email, 
       contact,
+      imagesUrl,
     });
 
     await this.repository.save(cause);

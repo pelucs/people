@@ -1,6 +1,6 @@
 import { Cause } from "@app/entities/cause/cause";
 export interface CauseRepositories {
-  getAllCauses(): Promise<Cause[]>;
+  getAllCauses(query?: string | null | undefined): Promise<Cause[]>;
   getCauseById(causeId: string): Promise<Cause>;
   create(cause: Cause): Promise<void>;
   save(cause: Cause): Promise<void>;

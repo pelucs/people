@@ -3,9 +3,10 @@ import logo from '@/assets/logotipo-socioambiental.png';
 import Link from "next/link";
 
 import { Button } from "./ui/button";
+import { Search } from "./Search";
 import { getUser } from "@/lib/auth";
 import { Separator } from "./ui/separator";
-import { LayoutGrid, LogOut, Menu, Search, User } from "lucide-react";
+import { LayoutGrid, LogOut, Menu, User } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 
 export function Header(){
@@ -18,7 +19,7 @@ export function Header(){
         <Image 
           src={logo}
           alt="Logo BeHero"
-          className="w-48"
+          className="w-full max-w-44"
         />
       </Link>
 
@@ -40,12 +41,7 @@ export function Header(){
         <Separator orientation="vertical" className="h-6"/>
 
         <div className="flex items-center gap-2">
-          <Button 
-            size="icon" 
-            variant="secondary" 
-          >
-            <Search className="size-4"/>
-          </Button>
+          <Search/>
 
           {user && (
             <Popover>

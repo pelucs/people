@@ -7,7 +7,7 @@ const inter = Inter_Tight({ subsets: ["latin"], variable: "--font-inter"});
 const anek = Anek_Gujarati({ subsets: ["latin"], weight: "700", variable: "--font-alt"});
 
 export const metadata: Metadata = {
-  title: "Socioambiental - ADVEC Campina Grande",
+  title: "Socioambiental",
   description: "Conectamos corações generosos a quem mais precisa.",
 };
 

@@ -14,7 +14,7 @@ import { useRouter } from "next/navigation";
 import { UpdateCauseDialog } from "./UpdateCauseDialog";
 import { DeleteCauseDialog } from "./DeleteCauseDialog";
 import { useEffect, useState } from "react";
-import { Clock, Eye, Handshake, Plus, ScanEye, ScanLine } from "lucide-react";
+import { Clock, Eye, Handshake, Pencil, Plus, ScanEye, ScanLine } from "lucide-react";
 import { isPast } from "date-fns";
 
 
@@ -66,7 +66,7 @@ export function ListOfCausesForAdmin() {
 
   return(
     <div className="w-full flex flex-col gap-8">
-      <div className="grid grid-cols-4 gap-5">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-2 md:gap-5">
         <div className="w-full py-4 px-5 flex flex-col gap-2 rounded-md border shadow">
           <div className="flex items-center justify-between">
             <h1 className="text-sm text-muted-foreground">Causas registradas</h1>
@@ -151,7 +151,13 @@ export function ListOfCausesForAdmin() {
                             </Link>
                           </Button>
 
-                          <UpdateCauseDialog cause={cause}/>
+                          <Button asChild size="icon" variant="outline">
+                            <Link href={`/dashboard/editar-causa/${cause.id}`}>
+                              <Pencil className="size-4"/>
+                            </Link>
+                          </Button>
+
+                          {/* <UpdateCauseDialog cause={cause}/> */}
                           <DeleteCauseDialog causeId={cause.id}/>
                         </div>
 
@@ -159,7 +165,6 @@ export function ListOfCausesForAdmin() {
                           Privada
                           
                           <Switch
-                            // checked={isPublicChange}
                             defaultChecked={cause.isPublic}
                             onCheckedChange={() => handlePublishCause(cause.isPublic, cause.id)}
                           />
@@ -168,54 +173,6 @@ export function ListOfCausesForAdmin() {
                         </div>
                       </div>
                     </div>
-
-                    {/* <div className="py-5 px-6 flex flex-col gap-5 flex-grow">
-                      <div className="space-y-5">
-                        <div className="space-y-2">
-                          <h1 className="text-lg leading-none font-semibold">
-                            {cause.title}
-                          </h1>
-
-                          <p className="text-sm text-muted-foreground leading-tight">
-                            {cause.description}
-                          </p>
-                        </div>
-
-                        <div>
-                          <div>
-                            <span className="text-xs text-muted-foreground">Registrada em</span>
-                            <p className="text-sm">
-                              {format(new Date(cause.createAt), "dd 'de' MMM, y", { locale: ptBR })}
-                            </p>
-                          </div>
-
-                          {cause.expirationAt && (
-                            <div>
-                              <span className="text-xs text-muted-foreground">Expira em</span>
-                              <p className="text-sm">
-                                {subDays(new Date(cause.expirationAt), new Date().getDate()).getDate()} dias
-                              </p>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    </div> */}
-
-                    {/* <div>
-                      <label>Tornar pública?</label>
-                      <Switch/>
-                    </div>
-
-                    <div className="px-6 pb-5 mt-auto flex items-center gap-2">
-                      <Button asChild className="flex-1">
-                        <Link href={`/causa/${cause.id}`}>
-                          Visualizar
-                        </Link>
-                      </Button>
-
-                      <UpdateCauseDialog cause={cause}/>
-                      <DeleteCauseDialog causeId={cause.id}/>
-                    </div> */}
                   </div>
                 ))}
               </div>

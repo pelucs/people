@@ -5,6 +5,7 @@ import { PrismaCauseMappers } from "../mappers/prisma-cause-mappers";
 
 export class PrismaCauseRepositories implements CauseRepositories {
  
+  // Resgatando uma causa específica
   async getCauseById(id: string): Promise<Cause> {
     const cause = await prisma.cause.findUnique({
       where: {
@@ -19,17 +20,32 @@ export class PrismaCauseRepositories implements CauseRepositories {
     return PrismaCauseMappers.toDomain(cause);
   }
   
-  async getAllCauses(): Promise<Cause[]> {
+  //Regatando as causas
+  async getAllCauses(query?: string | null | undefined): Promise<Cause[]> {
+
     const causes = await prisma.cause.findMany({
+      where: query ? {
+        OR: [
+          {
+            title: {
+              contains: query,
+              mode: 'insensitive',
+            },
+          },
+          {
+            description: {
+              contains: query,
+              mode: 'insensitive',
+            },
+          },
+        ],
+      } : {},
       orderBy: {
         createAt: "desc"
       }
     });
 
-    return causes.map(cause => PrismaCauseMappers.toDomain({
-      ...cause,
-      description: cause.description.substring(0, 80).concat("...")
-    }));
+    return causes.map(cause => PrismaCauseMappers.toDomain(cause));
   }
 
   // Criando uma causa

@@ -1,5 +1,5 @@
-import { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
 import { causeController } from "../controllers/cause";
+import { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
 
 export async function causeRoutes(app: FastifyInstance) {
 
@@ -15,7 +15,7 @@ export async function causeRoutes(app: FastifyInstance) {
 
   // Resgatar todas as causas públicas
   app.get("/causes/public", async (request: FastifyRequest, reply: FastifyReply) => {
-    await causeController.allPublicCauses(reply);
+    await causeController.allPublicCauses(request, reply);
   });
 
   // Resgatar uma causa específica

@@ -8,35 +8,59 @@ import Image from "next/image";
 import { z } from "zod";
 import { api } from "@/api/axios";
 import { toast } from "@/components/ui/use-toast";
+import { Cause } from '@/types/cause';
 import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { DatePicker } from "./DatePicker";
+import { DatePicker } from '../../nova-causa/DatePicker';
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoaderCircle } from "lucide-react";
+import { useEffect, useState } from "react";
+import { useParams, useRouter } from "next/navigation";
 import { FileUploaderRegular, OutputCollectionState } from '@uploadcare/react-uploader';
 
 const formSchema = z.object({
-  title: z.string({ message: "Campo obrigatório" }),
-  email: z.string({ message: "Campo obrigatório" }).email(),
-  contact: z.string({ message: "Campo obrigatório" }),
-  location: z.string({ message: "Campo obrigatório" }),
+  title: z.string({ message: "Campo obrigatório" }).nullish(),
+  email: z.string({ message: "Campo obrigatório" }).nullish(),
+  contact: z.string({ message: "Campo obrigatório" }).nullish(),
+  location: z.string({ message: "Campo obrigatório" }).nullish(),
   description: z.string({ message: "Campo obrigatório" })
-  .max(500, "Descrição deve conter no máximo 500 caracteres"),
+  .max(500, "Descrição deve conter no máximo 500 caracteres").nullish(),
 });
 
 type FormTypes = z.infer<typeof formSchema>;
 
-export function CreateCauseForm() {
+export function EditCauseForm() {
+
+  const navigation = useRouter();
+
+  const { causeId } = useParams<{ causeId: string }>();
   
   const [date, setDate] = useState<Date>();
   const [imageUrl, setImagesUrl] = useState<string[]>([]);
 
+  const [cause, setCause] = useState<Cause>();
+
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [maxLengthDescription, setMaxLengthDescription] = useState<string>("");
 
-  const navigation = useRouter();
+  useEffect(() => {
+    const getCause = async () => {
+      try {
+        const response = await api.get(`/cause/${causeId}`);
+        const data: Cause = response.data;
+
+        setCause(data);
+
+        if(data) {
+          setImagesUrl(data.imagesUrl)
+        }
+      } catch(err) {
+        console.log(err)
+      }
+    }
+
+    getCause();
+  }, []);
 
   const { handleSubmit, register, formState: { errors } } = useForm<FormTypes>({
     resolver: zodResolver(formSchema)
@@ -52,56 +76,44 @@ export function CreateCauseForm() {
     setImagesUrl(validUrls);
   };
 
-  const createCause = async (data: FormTypes) => {
-    if(imageUrl.length > 0) {
-      setIsLoading(true);
-
-      const { title, description, email, contact, location } = data;
-
-      try {
-        const res = await api.post("/cause/create", {
-          title,
-          description,
-          email,
-          contact,
-          location,
-          expirationAt: date,
-          imagesUrl: imageUrl,
-        })
-        
-        toast({
-          title: res.data.message
-        })
-
-        navigation.push(`/causa/${res.data.id}`);
-      } catch(err: any) {
-        console.log(err)
-        toast({
-          title: err.message
-        });
-      } finally {
-        setIsLoading(false);
-      }
-    } else {
-      toast({
-        title: "Insira uma imagem"
+  const editCause = async (data: FormTypes) => {
+    setIsLoading(true);
+    
+    try {
+      await api.put(`/cause/${causeId}`, {
+        email: data.email,
+        contact: data.contact,
+        title: data.title,
+        description: data.description,
+        location: data.location,
+        imagesUrl: imageUrl,
       })
-    }
 
+      toast({
+        title: "Alterações salvas!"
+      })
+
+      navigation.push(`/causa/${causeId}`);
+    } catch(err) {
+      console.log(err)
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   return(
-    <form 
-      onSubmit={handleSubmit(createCause)} 
-      className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-5 md:rounded-xl"
-    >
-      <div className="py-5 px-6 rounded-xl border shadow flex flex-col gap-3">
+    <div className="mt-5 grid grid-cols-2 gap-5">
+      <form 
+        onSubmit={handleSubmit(editCause)} 
+        className="py-5 px-6 border shadow rounded-xl space-y-3"
+      >
         <div className="flex flex-col gap-1">
           <label htmlFor="title" className="label">Título</label>
           <input 
             id="title"
-            placeholder="Informe o título"
             className="input"
+            placeholder="Informe o título"
+            defaultValue={cause?.title}
             {...register("title")}
           />
 
@@ -117,6 +129,7 @@ export function CreateCauseForm() {
             id="location"
             placeholder="Informe a cidade"
             className="input"
+            defaultValue={cause?.location}
             {...register("location")}
           />
 
@@ -140,6 +153,7 @@ export function CreateCauseForm() {
             id="contact"
             placeholder="Informe o seu contato"
             className="input"
+            defaultValue={cause?.contact}
             {...register("contact")}
           />
 
@@ -154,6 +168,7 @@ export function CreateCauseForm() {
             id="email"
             placeholder="Informe o seu email"
             className="input"
+            defaultValue={cause?.email}
             {...register("email")}
           />
 
@@ -183,6 +198,7 @@ export function CreateCauseForm() {
             maxLength={500}
             {...register("description")}
             onChange={e => setMaxLengthDescription(e.target.value)}
+            defaultValue={cause?.description}
             placeholder="Escreva uma descrição"
             className="h-60 py-4 px-5 rounded-md border"
           ></textarea>
@@ -195,11 +211,11 @@ export function CreateCauseForm() {
         <Button 
           type="submit"
           disabled={isLoading}
-          className="disabled:opacity-90"
+          className="w-40 disabled:opacity-90"
         >
-          {isLoading ? <LoaderCircle className="size-4 animate-spin"/> : "Criar causa"}
+          {isLoading ? <LoaderCircle className="size-4 animate-spin"/> : "Salvar alterações"}
         </Button>
-      </div>
+      </form>
 
       <div className="py-5 px-6 rounded-xl border shadow flex flex-col gap-2">
         <div className="space-y-4">
@@ -232,6 +248,6 @@ export function CreateCauseForm() {
           <div className="aspect-video border border-dashed border-xl"/>
         )}
       </div>
-    </form>
+    </div>
   );
 }

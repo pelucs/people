@@ -5,8 +5,8 @@ export class GetAllCauses {
     private repository: CauseRepositories
   ) {}
 
-  async execute() {
-    const causes = await this.repository.getAllCauses();
+  async execute(query?: string | null | undefined) {
+    const causes = await this.repository.getAllCauses(query);
     return { causes }
   }
 }

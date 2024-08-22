@@ -71,7 +71,7 @@ export function SeeOtherCauses() {
                         </h1>
 
                         <p className="text-sm text-muted-foreground leading-tight">
-                          {cause.description}
+                          {cause.description.substring(0, 100).concat("...")}
                         </p>
                       </div>
 
