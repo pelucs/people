@@ -66,7 +66,7 @@ export function SeeOtherCauses() {
                   <div className="py-5 px-6 flex flex-col gap-5 flex-grow">
                     <div className="space-y-5">
                       <div className="space-y-2">
-                        <h1 className="text-lg leading-none font-semibold">
+                        <h1 className="text-lg leading-tight font-semibold">
                           {cause.title}
                         </h1>
 

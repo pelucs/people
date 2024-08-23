@@ -21,7 +21,7 @@ export default async () => {
       <Header/>
       
       <div className="space-y-16">
-        <div className="md:h-screen py-14 flex flex-col items-center justify-center gap-8 bg-center bg-cover bg-[url(../assets/bg.png)]">
+        <div className="md:h-screen py-10 px-5 flex flex-col items-center justify-center gap-8 bg-center bg-cover bg-[url(../assets/bg.png)]">
           <div className="h-8 pr-3 flex items-center gap-2 rounded-full text-green-800 bg-primary/20">
             <span className="text-white size-8 rounded-full bg-primary flex items-center justify-center">
               <HeartHandshake className="size-4"/>
@@ -33,11 +33,11 @@ export default async () => {
           </div>
 
           <h1 className="text-center text-5xl md:text-6xl font-alt leading-none">
-            Solidariedade, cuidado <br/> 
-            e voluntariado
+            Solidariedade, cuidado e <br/>
+            voluntariado
           </h1>
 
-          <p className="text-center text-xl w-full max-w-xl">
+          <p className="text-center md:text-xl w-full max-w-xl">
             Conectando corações generosos àqueles que mais precisam, criando uma rede de apoio e 
             solidariedade através do voluntariado.
           </p>
@@ -67,7 +67,7 @@ export default async () => {
         <Separator id="sobre-nos"/>
 
         <div className="md:px-14">
-          <div className="p-5 md:p-14 grid grid-cols-1 md:grid-cols-2 gap-10 rounded-2xl bg-primary/20">
+          <div className="py-10 px-5 md:p-14 grid grid-cols-1 md:grid-cols-2 gap-10 rounded-2xl bg-primary/10">
             <div className="">
               <div className=" overflow-hidden rounded-xl">
                 <Image 
@@ -78,7 +78,7 @@ export default async () => {
             </div>
             
             <div className="flex flex-col justify-center gap-5">
-              <h1 className="font-alt text-2xl md:text-4xl">Quem somos?</h1>
+              <h1 className="leading-tight font-alt text-2xl md:text-4xl">Quem somos?</h1>
 
               <p className="text-muted-foreground">
                 Socioambiental é um departamento da Assembleia de Deus Vitória em Cristo, localizado na sede no 
