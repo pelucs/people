@@ -93,7 +93,7 @@ export function CreateCauseForm() {
   return(
     <form 
       onSubmit={handleSubmit(createCause)} 
-      className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-5 md:rounded-xl"
+      className="mt-5 flex flex-col-reverse md:grid md:grid-cols-2 gap-5 md:rounded-xl"
     >
       <div className="py-5 px-6 rounded-xl border shadow flex flex-col gap-3">
         <div className="flex flex-col gap-1">

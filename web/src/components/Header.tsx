@@ -18,7 +18,7 @@ export function Header(){
       <Link href="/">
         <Image 
           src={logo}
-          alt="Logo BeHero"
+          alt=""
           className="w-full max-w-44"
         />
       </Link>

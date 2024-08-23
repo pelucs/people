@@ -1,3 +1,4 @@
+import Image from "next/image";
 import example from "../assets/example.jpg";
 
 import { Footer } from "@/components/Footer";
@@ -13,8 +14,6 @@ import {
   ShieldCheck, 
   ThumbsUp 
 } from "lucide-react";
-
-import Image from "next/image";
 
 export default async () => {
   return(
@@ -68,7 +67,7 @@ export default async () => {
         <Separator id="sobre-nos"/>
 
         <div className="md:px-14">
-          <div className="p-5 md:p-14 grid grid-cols-1 md:grid-cols-2 gap-5 rounded-2xl bg-primary/20">
+          <div className="p-5 md:p-14 grid grid-cols-1 md:grid-cols-2 gap-10 rounded-2xl bg-primary/20">
             <div className="">
               <div className=" overflow-hidden rounded-xl">
                 <Image 

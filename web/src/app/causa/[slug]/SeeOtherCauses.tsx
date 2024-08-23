@@ -59,7 +59,7 @@ export function SeeOtherCauses() {
                       height={500}
                       src={cause.imagesUrl[0]} 
                       alt="Exemplo" 
-                      className=""
+                      className="w-full"
                     />
                   </div>
 

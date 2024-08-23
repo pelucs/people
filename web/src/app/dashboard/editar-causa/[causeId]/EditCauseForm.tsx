@@ -102,7 +102,7 @@ export function EditCauseForm() {
   }
 
   return(
-    <div className="mt-5 grid grid-cols-2 gap-5">
+    <div className="mt-5 flex flex-col-reverse md:grid md:grid-cols-2 gap-5">
       <form 
         onSubmit={handleSubmit(editCause)} 
         className="py-5 px-6 border shadow rounded-xl space-y-3"

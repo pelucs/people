@@ -57,7 +57,7 @@ export function CardCause({ user }: CardCauseProps) {
             Esta causa foi verificada!
           </div>
 
-          <div className="sticky top-10 space-y-5">
+          <div className="space-y-5">
             <Image 
               alt=""
               width={500}

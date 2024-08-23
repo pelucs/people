@@ -3,7 +3,7 @@
 import { cn } from "@/lib/utils";
 import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
-import { Search as SearchIcon } from "lucide-react";
+import { Search as SearchIcon, X } from "lucide-react";
 import { KeyboardEvent, useState } from "react";
 
 export function Search() {
@@ -13,50 +13,53 @@ export function Search() {
   const [open, setOpen] = useState<boolean>(false);
   const [query, setQuery] = useState<string>("");
 
-  const handleSearch = () => {
-    const pathname = window.location.pathname;
-    const searchPath = "/search";
-  
-    if (pathname === searchPath) {
-      if (query) {
-        navigation.push(`${searchPath}?query=${encodeURIComponent(query)}`);
-      } else {
-        window.location.reload();
-      }
-    } else {
-      navigation.push(query ? `${searchPath}?query=${encodeURIComponent(query)}` : searchPath);
-    }
-  };
-  
-
   const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter') {
+    if(event.key === 'Enter' && query) {
       event.preventDefault();
-      handleSearch();
+      navigation.push(`/search?query=${query}`)
     }
-  };
+  }
 
   return (
-    <div className="flex items-center border rounded-md">
-      <Button
-        size="icon"
-        variant={open ? "default" : "ghost"}
-        onClick={() => setOpen(!open)}
-      >
-        <SearchIcon className="size-4" />
-      </Button>
+    <div
+      className={cn("", {
+        "w-full h-20 flex items-center justify-center absolute top-0 left-0 bg-background border-b md:w-fit md:h-fit md:static md:border-none": open,
+        "": !open
+      })}
+    >
+      <div className="flex items-center border rounded-md">
+        <Button
+          size="icon"
+          variant={open ? "default" : "ghost"}
+          onClick={() => setOpen(!open)}
+        >
+          {open ? (
+            <X className="size-4"/>
+          ) : (
+            <SearchIcon className="size-4" />
+          )}
+        </Button>
 
-      <input
-        type="search"
-        value={query}
-        onKeyDown={handleKeyDown}
-        onChange={e => setQuery(e.target.value)}
-        placeholder="O que você está procurando?"
-        className={cn("h-10 text-sm outline-none transition-all no-clear-button", {
-          "w-60 px-3 visible": open,
-          "w-0 invisible": !open,
-        })}
-      />
+        <input
+          required
+          type="search"
+          value={query}
+          onKeyDown={handleKeyDown}
+          onChange={e => setQuery(e.target.value)}
+          placeholder="O que você está procurando?"
+          className={cn("h-10 text-sm outline-none transition-all no-clear-button", {
+            "w-60 pl-3 pr-1 visible": open,
+            "w-0 invisible": !open,
+          })}
+        />
+
+        <span className={cn("text-[10px] p-px px-1 rounded bg-secondary text-muted-foreground", {
+          "flex mr-3": open,
+          "hidden": !open
+        })}>
+          Enter
+        </span>
+      </div>
     </div>
   );
 }
