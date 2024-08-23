@@ -51,10 +51,20 @@ export function CardCause({ user }: CardCauseProps) {
     <div>
       {cause ? (
         <div className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="py-3 px-4 md:hidden flex items-center gap-2 rounded-xl font-semibold text-sm text-primary bg-primary/10">
-            <ShieldCheck className="w-4 text-primary"/>
+          <div className="md:hidden flex items-center gap-2">
+            <div className="flex-1 py-2 px-4 flex items-center gap-2 rounded-md font-semibold text-sm text-primary bg-primary/10">
+              <ShieldCheck className="w-4 text-primary"/>
 
-            Esta causa foi verificada!
+              Esta causa foi verificada!
+            </div>
+
+            <Button 
+              size="icon" 
+              className="gap-2 md:hidden flex"
+              onClick={() => share(`${window.location.href}`)}
+            >
+              <Share2 className="size-4"/>
+            </Button>
           </div>
 
           <div className="space-y-5">
@@ -69,8 +79,8 @@ export function CardCause({ user }: CardCauseProps) {
             <a 
               target="_blank"
               href="https://www.instagram.com/socioambiental_cg/" 
-              className="w-full md:w-fit py-3 px-4 flex items-center font-medium text-sm gap-2 rounded-lg border shadow
-              bg-primary text-background"
+              className="w-full md:w-fit py-3 px-4 flex items-center justify-center md:justify-start 
+              font-medium text-sm gap-2 rounded-lg border shadow bg-primary text-background"
             >
               <BellPlus className="size-4 animate-bounce"/>
 
@@ -101,7 +111,7 @@ export function CardCause({ user }: CardCauseProps) {
                 
                 <Button 
                   size="sm" 
-                  className="gap-2"
+                  className="gap-2 hidden md:flex"
                   onClick={() => share(`${window.location.href}`)}
                 >
                   <Share2 className="size-4"/>

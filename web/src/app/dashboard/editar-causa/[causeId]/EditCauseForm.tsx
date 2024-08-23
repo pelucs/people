@@ -2,6 +2,7 @@
 
 import '@uploadcare/react-uploader/core.css';
 
+import dynamic from 'next/dynamic';
 import clsx from "clsx";
 import Image from "next/image";
 
@@ -16,7 +17,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { LoaderCircle } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { FileUploaderRegular, OutputCollectionState } from '@uploadcare/react-uploader';
+import { OutputCollectionState } from '@uploadcare/react-uploader';
+
+const FileUploaderRegular = dynamic(() =>
+  import('@uploadcare/react-uploader').then((mod) => mod.FileUploaderRegular),
+  { ssr: false }
+);
 
 const formSchema = z.object({
   title: z.string({ message: "Campo obrigatório" }).nullish(),
@@ -221,16 +227,19 @@ export function EditCauseForm() {
         <div className="space-y-4">
           <h1 className="text-2xl font-bold leading-none  ">Insira uma imagem</h1>
 
-          <FileUploaderRegular
-            imgOnly={true}
-            multipleMax={1}
-            sourceList="local, url"
-            onChange={handleChangeEvent}
-            useCloudImageEditor={true}
-            maxLocalFileSizeBytes={10000000}
-            classNameUploader="my-config uc-light"
-            pubkey={process.env.NEXT_PUBLIC_UPLOADCARE_PUBLIC_KEY}
-          />
+          {typeof window !== 'undefined' && (
+            <FileUploaderRegular
+              imgOnly={true}
+              multipleMax={1} 
+              ctxName=''
+              sourceList="local, url"
+              onChange={handleChangeEvent}
+              useCloudImageEditor={true}
+              maxLocalFileSizeBytes={10000000}
+              classNameUploader="my-config uc-light"
+              pubkey={process.env.NEXT_PUBLIC_UPLOADCARE_PUBLIC_KEY}
+            />
+          )}
         </div>
 
         {imageUrl ? (
