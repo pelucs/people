@@ -1,18 +1,18 @@
 'use client'
 
-import Link from "next/link";
+import img from '@/assets/img.png';
 import Image from "next/image";
-import illustration from '../../assets/kids.svg';
 
 import { z } from "zod";
 import { api } from "@/api/axios";
 import { Logo } from "@/components/Logo";
-import { toast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Eye, EyeOff, LoaderCircle, LogIn } from "lucide-react";
+import { Eye, EyeOff, LoaderCircle } from "lucide-react";
+import { toast } from '@/components/ui/use-toast';
+import { AxiosError } from 'axios';
 
 const formSchema = z.object({
   email: z.string().email("Email incorreto."),
@@ -46,21 +46,23 @@ export default () => {
 
       document.cookie = `token=${token}; Path=/; max-age=${expireTokenInSeconds};` 
       window.location.pathname = "/dashboard";
-    } catch(err) {
-      console.log(err)
+    } catch(err: unknown) {
+      const error = err as AxiosError;
+      const errorData = error.response?.data as { message: string }
 
-      // toast({
-      //   title: "Email e/ou senha incorreto(s)"
-      // })
+      toast({
+        title: errorData.message
+      })
+      
     } finally {
       setIsLoading(false);
     }
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center">
-      <div className="w-full max-w-[1120px] grid grid-cols-1 md:grid-cols-2 gap-10">
-        <div className="p-10 md:p-20 flex flex-col items-center md:items-start justify-start gap-20">
+    <div className="h-screen md:grid md:grid-cols-2">
+      <div className="h-full p-10 flex items-center justify-center">
+        <div className="w-full max-w-sm space-y-20 flex flex-col items-center md:items-start">
           <Logo/>
 
           <div className="w-full">
@@ -122,14 +124,6 @@ export default () => {
                 {isLoading ? <LoaderCircle className="size-4 animate-spin"/> : "Efetuar Login"}
               </Button>
             </form>
-
-            <Link href="/registro" className="mt-5 font-semibold flex items-center justify-center md:justify-start gap-2">
-              <LogIn className="size-4 text-green-500"/>
-
-              Não possui uma conta?
-
-              <span className="text-green-500 underline">Crie uma</span>
-            </Link>
           </div>
 
           <p className="text-sm text-zinc-400">
@@ -144,14 +138,15 @@ export default () => {
             </a>
           </p>
         </div>
+      </div>
+        
 
-        <div className="hidden md:flex items-center justify-center">
-          <Image 
-            src={illustration} 
-            alt="Ilustração Criança"
-            className="w-[756px]"
-          />
-        </div>
+      <div className="hidden md:flex overflow-hidden">
+        <Image 
+          src={img} 
+          alt="Ilustração Criança"
+          className="w-full"
+        />
       </div>
     </div>
   );

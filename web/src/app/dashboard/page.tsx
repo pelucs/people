@@ -1,18 +1,17 @@
-import { Header } from "@/components/Header";
-import { Footer } from "@/components/Footer";
-import { getUser } from "@/lib/auth";
-import { ListOfCausesForAdmin } from "./ListOfCausesForAdmin";
-import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
 import Link from "next/link";
 
-export default () => {
+import { Plus } from "lucide-react";
+import { User } from "@/types/user";
+import { Header } from "@/components/Header";
+import { Button } from "@/components/ui/button";
+import { Footer } from "@/components/Footer";
+import { fetchUser } from "@/http/fetchUser";
+import { ListOfCausesForAdmin } from "./ListOfCausesForAdmin";
+import { CreateNewUserDialog } from "./CreateNewUserDialog";
 
-  const user = getUser();
+export default async () => {
 
-  if(!user) {
-    throw new Error("Unauthenticated")
-  }
+  const user: User = await fetchUser();
 
   return(
     <div className="w-full space-y-10">
@@ -26,24 +25,44 @@ export default () => {
             </h1>
 
             <span className="py-2 px-3 rounded-md text-xs text-primary bg-primary/10">
-              Suporte
+              {user.type === "admin" ? "Admin" : "Suporte"}
             </span>
           </div>
 
-          <Button 
-            asChild 
-            size="sm"
-            className="gap-1"
-          >
-            <Link href="/dashboard/nova-causa">
-              <Plus className="size-4"/>
+          {user.permissions.includes("create") && (
+            <div className="flex items-center gap-2">
+              <div>
+                  <Button 
+                    asChild 
+                    size="sm"
+                    className="gap-1 hidden md:flex"
+                  >
+                    <Link href="/dashboard/nova-causa">
+                      <Plus className="size-4"/>
 
-              Nova causa
-            </Link>
-          </Button>
+                      Nova causa
+                    </Link>
+                  </Button>
+
+                <Button 
+                  asChild 
+                  size="icon"
+                  className="gap-1 flex md:hidden"
+                  >
+                  <Link href="/dashboard/nova-causa">
+                    <Plus className="size-4"/>
+                  </Link>
+                </Button>
+              </div>
+
+              {user.type === "admin" && (
+                <CreateNewUserDialog/>
+              )}
+            </div>
+          )}
         </div>
 
-        <ListOfCausesForAdmin/>
+        <ListOfCausesForAdmin user={user}/>
       </div>
 
       <Footer/>

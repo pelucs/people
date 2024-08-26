@@ -11,7 +11,6 @@ export class PrismaCauseMappers {
       description: cause.description,
       location: cause.location,
       createAt: cause.createAt,
-      expirationAt: cause.expirationAt,
       imagesUrl: cause.imagesUrl,
       isPublic: cause.isPublic,
     }
@@ -25,7 +24,6 @@ export class PrismaCauseMappers {
       description: raw.description,
       createAt: raw.createAt,
       location: raw.location,
-      expirationAt: raw.expirationAt,
       isPublic: raw.isPublic,
       imagesUrl: raw.imagesUrl,
     }, raw.id)

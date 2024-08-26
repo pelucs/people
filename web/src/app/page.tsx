@@ -1,5 +1,5 @@
 import Image from "next/image";
-import example from "../assets/example.jpg";
+import img from "../assets/img.png";
 
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -72,7 +72,7 @@ export default async () => {
               <div className=" overflow-hidden rounded-xl">
                 <Image 
                   alt="" 
-                  src={example}
+                  src={img}
                 />
               </div>
             </div>

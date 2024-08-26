@@ -7,7 +7,6 @@ interface CreateUserRequest {
   contact: string;
   location: string;
   description: string;
-  expirationAt: Date;
   imagesUrl: string[];
 }
 
@@ -25,7 +24,6 @@ export class CreateCause {
       contact: data.contact,
       location: data.location,
       description: data.description,
-      expirationAt: data.expirationAt,
       imagesUrl: data.imagesUrl,
       isPublic: false,
     });

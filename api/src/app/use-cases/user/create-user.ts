@@ -9,6 +9,7 @@ interface CreateUserRequest {
   email: string;
   password: string;
   type: string;
+  permissions: string[];
 }
 
 interface CreateUserReply {
@@ -22,7 +23,7 @@ export class CreateUser {
   ) {}
   
   async execute(request: CreateUserRequest): Promise<CreateUserReply> {
-    const { name, email, password, type } = request;
+    const { name, email, password, type, permissions } = request;
 
     const isAlreadyUser = await this.repository.findByEmail(email);
 
@@ -34,6 +35,7 @@ export class CreateUser {
       name,
       email,
       type,
+      permissions,
       password: await bcrypt.hash(password, 10),
     })
 

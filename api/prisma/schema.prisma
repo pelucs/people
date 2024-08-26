@@ -8,26 +8,26 @@ datasource db {
 }
 
 model User {
-  id       String @id @map("_id") @db.ObjectId
-  name     String
-  email    String @unique
-  password String
-  type     String // superAdmin | admin | support
+  id          String   @id @map("_id") @db.ObjectId
+  name        String
+  email       String   @unique
+  password    String
+  type        String // admin | support
+  permissions String[] // create | edit | delete
 
   @@map("users")
 }
 
 model Cause {
-  id           String    @id @map("_id") @db.ObjectId
-  title        String
-  description  String
-  email        String
-  contact      String
-  createAt     DateTime
-  expirationAt DateTime?
-  isPublic     Boolean   @default(false)
-  location     String
-  imagesUrl    String[]
+  id          String   @id @map("_id") @db.ObjectId
+  title       String
+  description String
+  email       String
+  contact     String
+  createAt    DateTime
+  isPublic    Boolean  @default(false)
+  location    String
+  imagesUrl   String[]
 
   @@map("causes")
 }

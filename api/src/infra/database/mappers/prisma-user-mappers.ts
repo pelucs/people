@@ -9,6 +9,7 @@ export class PrismaUserMappers {
       email: user.email,
       password: user.password,
       type: user.type,
+      permissions: user.permissions,
     }
   }
 
@@ -18,6 +19,7 @@ export class PrismaUserMappers {
       email: raw.email,
       password: raw.password,
       type: raw.type,
+      permissions: raw.permissions,
     }, raw.id)
   }
 }

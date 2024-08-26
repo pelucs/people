@@ -8,7 +8,7 @@ export function Logo(){
       <Image 
         src={logo}
         alt="Logo BeHero"
-        className="w-40"
+        className="w-60"
       />
     </Link>
   );

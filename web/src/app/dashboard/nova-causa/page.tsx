@@ -1,15 +1,14 @@
+import { User } from "@/types/user";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
-import { getUser } from "@/lib/auth";
+import { redirect } from 'next/navigation'
+import { fetchUser } from "@/http/fetchUser";
 import { CreateCauseForm } from "./CreateCauseForm";
+import Link from "next/link";
 
-export default () => {
+export default async () => {
 
-  const user = getUser();
-
-  if(!user) {
-    throw new Error("Unauthenticated")
-  }
+  const user: User = await fetchUser();
 
   return(
     <div className="w-full">
@@ -24,7 +23,7 @@ export default () => {
           </span>
         </div>
 
-        <CreateCauseForm/>
+        <CreateCauseForm user={user}/>
       </div>
       
       <Footer/>

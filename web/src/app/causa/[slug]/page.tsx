@@ -1,6 +1,7 @@
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { getUser } from "@/lib/auth";
+import { redirect } from "next/navigation";
 import { CardCause } from "./CardCause";
 import { SeeOtherCauses } from "./SeeOtherCauses";
 
@@ -13,11 +14,7 @@ export default () => {
       <Header/>
 
       <div className="mt-5 px-5 md:px-14 space-y-14">
-        <div className="space-y-5">
-          <h1 className="text-2xl font-bold">Abrace essa causa!</h1>
-          <CardCause user={user}/>
-        </div>
-        
+        <CardCause user={user}/>        
         <SeeOtherCauses/>
       </div>
 

@@ -2,13 +2,11 @@ import { InMemoryCauseRepositories } from "../../../../test/in-memory-cause-repo
 import { describe, it, expect } from "vitest";
 import { CreateCause } from "./create-cause";
 import { DeleteCause } from "./delete-cause";
-import { randomUUID } from "node:crypto";
 
 describe("Delete a cause", () => {
   it("should be able to delete a cause by id", async () => {
     const repositories = new InMemoryCauseRepositories();
     const createCause = new CreateCause(repositories);
-    const deleteCause = new DeleteCause(repositories);
 
     const { cause } = await createCause.execute({
       title: "Doação de um pacote de fraldas",
@@ -16,7 +14,6 @@ describe("Delete a cause", () => {
       contact: "83 98729-6826",
       email: "pedro@gmail.com",
       location: "Rua Doutor Paulo Roberto Mayer, 556",
-      expirationAt: new Date("20/08/2024"),
       imagesUrl: ["teste.png"]
     });
 

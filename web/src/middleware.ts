@@ -27,6 +27,7 @@ export const config = {
     "/login",
     "/registro", 
     "/nova-causa", 
-    "/perfil"
+    "/perfil",
+    "/dashboard"
   ]
 }

@@ -35,7 +35,6 @@ export class LoginUser {
     const token = jwt.sign({
       id: user.id,
       name: user.name,
-      type: user.type,
     }, `${process.env.SECRET_JWT}`, { expiresIn: '1d' });
     
     return { token } 
