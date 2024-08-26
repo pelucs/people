@@ -6,6 +6,7 @@ import { UserRepositories } from "@app/repositories/userRepositories";
 export interface UpdateUserRequest {
   name: string;
   type: string;
+  permissions: string[];
 }
 
 export class UpdateUser {
@@ -15,7 +16,7 @@ export class UpdateUser {
   ) {}
 
   async execute(userId: string, request: UpdateUserRequest) {
-    const { name, type } = request;
+    const { name, type, permissions } = request;
 
     const isAlreadyExists = await this.repository.findUserById(userId);
 
@@ -26,12 +27,12 @@ export class UpdateUser {
     await this.repository.update(userId, {
       name,
       type,
+      permissions,
     });
 
     const token = jwt.sign({
       id: userId,
       name,
-      type,
     }, `${process.env.SECRET_JWT}`, { expiresIn: '1d' });
     
     return { token } 

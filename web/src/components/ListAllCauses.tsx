@@ -74,12 +74,12 @@ export function ListAllCauses() {
         {!loading ? (
           <>
             {filteredCausesBySearch.length > 0 ? (
-              <div className="mt-5 grid grid-cols-1 md:grid-cols-3 gap-5">
+              <div className="mt-5 grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-5">
                 {filteredCausesBySearch.map((cause) => (
                   <Link 
                     key={cause.id}
                     href={`/causa/${cause.id}`}
-                    className="rounded-xl overflow-hidden border hover:border-primary shadow relative
+                    className="rounded-md md:rounded-xl overflow-hidden border hover:border-primary relative
                     transition-colors bg-secondary"
                   >
                     <div className="aspect-video overflow-hidden flex items-center justify-start">
@@ -87,33 +87,42 @@ export function ListAllCauses() {
                         width={500}
                         height={500}
                         src={cause.imagesUrl[0]} 
-                        alt="" 
+                        alt={cause.title}
+                        className="w-full"
                       />
                     </div>
 
-                    <div className="py-5 px-6 space-y-5">
+                    <div className="p-3 md:py-5 md:px-6 space-y-2 md:space-y-5">
                       <div className="flex flex-col gap-1">
-                        <h1 className="leading-tight text-lg font-semibold">
-                          {cause.title}
+                        <h1 className="leading-tight text-sm md:text-lg font-semibold">
+                          {cause.title.substring(0, 30).concat("...")}
                         </h1>
 
-                        <p className="text-sm text-muted-foreground leading-tight">
+                        <p className="hidden md:block text-sm text-muted-foreground leading-tight">
                           {cause.description.substring(0, 100).concat("...")}
+                        </p>
+                      </div>
+
+                      <div>
+                        <span className="text-xs text-muted-foreground">Localização</span>
+
+                        <p className="text-xs md:text-base font-medium leading-tight">
+                          {cause.location}
                         </p>
                       </div>
 
                       <div>
                         <span className="text-xs text-muted-foreground">Registrada em</span>
 
-                        <p className="font-medium leading-tight">
+                        <p className="text-xs md:text-base font-medium leading-tight">
                           {format(new Date(cause.createAt), "dd 'de' MMM, y", { locale: ptBR })}
                         </p>
                       </div>
 
-                      <span className="flex items-center gap-2 text-primary underline font-semibold">
-                        Ver mais informações
+                      <span className="text-xs md:text-base flex items-center gap-1 text-primary underline font-semibold">
+                        Saiba mais
 
-                        <ChevronRight className="size-4"/>
+                        <ChevronRight className="size-3 md:size-4"/>
                       </span>
                     </div>
                   </Link>

@@ -1,7 +1,6 @@
 import { InMemoryCauseRepositories } from "../../../../test/in-memory-cause-repositories";
 import { describe, it, expect } from "vitest";
 import { CreateCause } from "./create-cause";
-import { randomUUID } from "node:crypto";
 import { GetAllCauses } from "./get-all-causes";
 
 describe("Get all causes", () => {
@@ -16,7 +15,6 @@ describe("Get all causes", () => {
       contact: "83 98729-6826",
       email: "pedro@gmail.com",
       location: "Rua Doutor Paulo Roberto Mayer, 556",
-      expirationAt: new Date("20/08/2024"),
       imagesUrl: ["teste.png"]
     });
 
@@ -26,7 +24,6 @@ describe("Get all causes", () => {
       contact: "83 98729-6826",
       email: "pedro@gmail.com",
       location: "Rua Doutor Paulo Roberto Mayer, 556",
-      expirationAt: new Date("20/08/2024"),
       imagesUrl: ["teste.png"]
     });
 

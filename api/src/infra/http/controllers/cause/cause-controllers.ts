@@ -31,7 +31,6 @@ export class CauseController {
         contact: z.string(),
         location: z.string(),
         description: z.string(),
-        expirationAt: z.coerce.date(),
         imagesUrl: z.coerce.string().array(),
       })
       
@@ -43,7 +42,6 @@ export class CauseController {
         contact: data.contact,
         location: data.location,
         description: data.description,
-        expirationAt: data.expirationAt,
         imagesUrl: data.imagesUrl,
       });
 

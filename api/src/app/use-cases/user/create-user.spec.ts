@@ -11,7 +11,8 @@ describe("Create a user", () => {
       name: "Pedro",
       email: "pedro@gmail.com",
       password: "123456",
-      type: "admin"
+      type: "admin",
+      permissions: ["create"]
     });
 
     expect(user).toBeTruthy();

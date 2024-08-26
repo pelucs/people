@@ -13,7 +13,8 @@ describe("Login user", () => {
       name: "Pedro",
       email: "pedro@gmail.com",
       password: "123456",
-      type: "normal"
+      type: "normal",
+      permissions: ["create"]
     });
 
     const { token } = await login.execute({

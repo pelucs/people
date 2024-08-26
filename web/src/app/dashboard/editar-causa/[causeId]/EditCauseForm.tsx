@@ -8,16 +8,20 @@ import Image from "next/image";
 
 import { z } from "zod";
 import { api } from "@/api/axios";
+import { User } from '@/types/user';
 import { toast } from "@/components/ui/use-toast";
 import { Cause } from '@/types/cause';
 import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
-import { DatePicker } from '../../nova-causa/DatePicker';
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoaderCircle } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { OutputCollectionState } from '@uploadcare/react-uploader';
+
+interface EditCauseFormProps {
+  user: User;
+}
 
 const FileUploaderRegular = dynamic(() =>
   import('@uploadcare/react-uploader').then((mod) => mod.FileUploaderRegular),
@@ -35,33 +39,38 @@ const formSchema = z.object({
 
 type FormTypes = z.infer<typeof formSchema>;
 
-export function EditCauseForm() {
+export function EditCauseForm({ user }: EditCauseFormProps) {
 
   const navigation = useRouter();
 
   const { causeId } = useParams<{ causeId: string }>();
   
-  const [date, setDate] = useState<Date>();
-  const [imageUrl, setImagesUrl] = useState<string[]>([]);
-
   const [cause, setCause] = useState<Cause>();
+  const [imageUrl, setImagesUrl] = useState<string[]>([]);
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [maxLengthDescription, setMaxLengthDescription] = useState<string>("");
 
   useEffect(() => {
     const getCause = async () => {
-      try {
-        const response = await api.get(`/cause/${causeId}`);
-        const data: Cause = response.data;
-
-        setCause(data);
-
-        if(data) {
-          setImagesUrl(data.imagesUrl)
+      if(user.permissions.includes("edit")) {
+        try {
+          const response = await api.get(`/cause/${causeId}`);
+          const data: Cause = response.data;
+  
+          setCause(data);
+  
+          if(data) {
+            setImagesUrl(data.imagesUrl)
+          }
+        } catch(err) {
+          console.log(err)
         }
-      } catch(err) {
-        console.log(err)
+      } else {
+        toast({
+          title: "Permissão negada",
+          description: "Você não tem permissão para editar causas!"
+        })
       }
     }
 
@@ -142,15 +151,6 @@ export function EditCauseForm() {
           {errors.location && (
             <span className="text-sm text-red-500">{errors.location.message}</span>
           )}
-        </div>
-
-        <div className="flex flex-col gap-1">
-          <label className="label">Data de expiração (Opcional)</label>
-          
-          <DatePicker 
-            date={date} 
-            setDate={setDate}
-          />
         </div>
 
         <div className="flex flex-col gap-1">

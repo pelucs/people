@@ -9,14 +9,15 @@ describe("Get user by id", () => {
     const createUser = new CreateUser(repositories);
     const getUser = new GetUser(repositories);
 
-    const { user } = await createUser.execute({
+    const { user } = await createUser.execute({  
       name: "Pedro",
       email: "pedro@gmail.com",
       password: "123456",
-      type: "normal"
+      type: "normal",
+      permissions: ["create"]
     });
 
-    const isAlreadyUserById = await getUser.execute({ userId: user.id });
+    const isAlreadyUserById = await getUser.execute(user.id);
 
     expect(isAlreadyUserById).toBeTruthy()
   })

@@ -16,14 +16,15 @@ export class UserControllers {
     private updateUser: UpdateUser
   ) {}
 
-  // Criação do meu usuário
+  // Criação de um usuário
   async create(request: FastifyRequest, reply: FastifyReply) {
     try {
       const bodySchema = z.object({
         name: z.string(),
         email: z.string().email(),
         password: z.string(),
-        type: z.string()
+        type: z.string(),
+        permissions: z.string().array(),
       })
   
       const data = bodySchema.parse(request.body);
@@ -55,12 +56,14 @@ export class UserControllers {
       return reply.status(200).send(token);
     } catch (err){
       if(err instanceof UserIncorrectPasswordError){
+        console.log("1" + err)
+        return reply.status(404).send({ message: err.message });
+
+      } else if(err instanceof UserNotFoundError) {
         return reply.status(404).send({ message: err.message });
       }
 
-      return reply.status(400).send({
-        message: err || "Erro inesprado"
-      })
+      
     }
   }
 
@@ -70,16 +73,17 @@ export class UserControllers {
       userId: z.string(),
     })
 
-    const data = paramsSchema.parse(request.params);
+    const { userId } = paramsSchema.parse(request.params);
 
     try {
-      const { user } = await this.getUser.execute(data);
+      const { user } = await this.getUser.execute(userId);
 
       return reply.status(200).send({
         id: user.id,
         name: user.name,
         email: user.email,
         type: user.type,
+        permissions: user.permissions,
       });
     } catch(err) {
       if(err instanceof UserNotFoundError) {
@@ -103,6 +107,7 @@ export class UserControllers {
       address: z.string(),
       contact: z.string(),
       type: z.string(),
+      permissions: z.string().array(),
     })
 
     const data = bodySchema.parse(request.body);

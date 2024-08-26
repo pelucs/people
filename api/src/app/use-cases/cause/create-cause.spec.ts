@@ -1,4 +1,3 @@
-import { randomUUID } from "crypto";
 import { CreateCause } from "./create-cause";
 import { describe, expect, it } from "vitest";
 import { InMemoryCauseRepositories } from "../../../../test/in-memory-cause-repositories";
@@ -14,7 +13,6 @@ describe("Create cause", () => {
       contact: "83 98729-6826",
       email: "pedro@gmail.com",
       location: "Rua Doutor Paulo Roberto Mayer, 556",
-      expirationAt: new Date("20/08/2024"),
       imagesUrl: ["teste.png"]
     });
 

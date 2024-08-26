@@ -7,15 +7,19 @@ import Image from "next/image";
 
 import { z } from "zod";
 import { api } from "@/api/axios";
+import { User } from '@/types/user';
 import { toast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { DatePicker } from "./DatePicker";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoaderCircle } from "lucide-react";
 import { FileUploaderRegular, OutputCollectionState } from '@uploadcare/react-uploader';
+
+interface CreateCauseFormProps {
+  user: User;
+}
 
 const formSchema = z.object({
   title: z.string({ message: "Campo obrigatório" }),
@@ -28,9 +32,8 @@ const formSchema = z.object({
 
 type FormTypes = z.infer<typeof formSchema>;
 
-export function CreateCauseForm() {
+export function CreateCauseForm({ user }: CreateCauseFormProps) {
   
-  const [date, setDate] = useState<Date>();
   const [imageUrl, setImagesUrl] = useState<string[]>([]);
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -53,41 +56,46 @@ export function CreateCauseForm() {
   };
 
   const createCause = async (data: FormTypes) => {
-    if(imageUrl.length > 0) {
-      setIsLoading(true);
-
-      const { title, description, email, contact, location } = data;
-
-      try {
-        const res = await api.post("/cause/create", {
-          title,
-          description,
-          email,
-          contact,
-          location,
-          expirationAt: date,
-          imagesUrl: imageUrl,
-        })
-        
+    if(user.permissions.includes("create")) {
+      if(imageUrl.length > 0) {
+        setIsLoading(true);
+  
+        const { title, description, email, contact, location } = data;
+  
+        try {
+          const res = await api.post("/cause/create", {
+            title,
+            description,
+            email,
+            contact,
+            location,
+            imagesUrl: imageUrl,
+          })
+          
+          toast({
+            title: res.data.message
+          })
+  
+          navigation.push(`/causa/${res.data.id}`);
+        } catch(err: any) {
+          console.log(err)
+          toast({
+            title: err.message
+          });
+        } finally {
+          setIsLoading(false);
+        }
+      } else {
         toast({
-          title: res.data.message
+          title: "Insira uma imagem"
         })
-
-        navigation.push(`/causa/${res.data.id}`);
-      } catch(err: any) {
-        console.log(err)
-        toast({
-          title: err.message
-        });
-      } finally {
-        setIsLoading(false);
       }
     } else {
       toast({
-        title: "Insira uma imagem"
+        title: "Permissão negada",
+        description: "Você não tem permissão para criar uma nova causa!"
       })
     }
-
   }
 
   return(
@@ -98,7 +106,8 @@ export function CreateCauseForm() {
       <div className="py-5 px-6 rounded-xl border shadow flex flex-col gap-3">
         <div className="flex flex-col gap-1">
           <label htmlFor="title" className="label">Título</label>
-          <input 
+          <input
+            required 
             id="title"
             placeholder="Informe o título"
             className="input"
@@ -113,7 +122,8 @@ export function CreateCauseForm() {
         <div className="flex flex-col gap-1">
           <label htmlFor="location" className="label">Localização</label>
           
-          <input 
+          <input
+            required 
             id="location"
             placeholder="Informe a cidade"
             className="input"
@@ -126,17 +136,9 @@ export function CreateCauseForm() {
         </div>
 
         <div className="flex flex-col gap-1">
-          <label className="label">Data de expiração (Opcional)</label>
-          
-          <DatePicker 
-            date={date} 
-            setDate={setDate}
-          />
-        </div>
-
-        <div className="flex flex-col gap-1">
           <label htmlFor="contact" className="label">Contato</label>
-          <input 
+          <input
+            required 
             id="contact"
             placeholder="Informe o seu contato"
             className="input"
@@ -150,7 +152,8 @@ export function CreateCauseForm() {
 
         <div className="flex flex-col gap-1">
           <label htmlFor="email" className="label">Email</label>
-          <input 
+          <input
+            required 
             id="email"
             placeholder="Informe o seu email"
             className="input"
@@ -179,6 +182,7 @@ export function CreateCauseForm() {
           </div>
 
           <textarea 
+            required
             id="title"
             maxLength={500}
             {...register("description")}
