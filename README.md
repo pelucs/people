@@ -1,6 +1,6 @@
 # Projeto Fullstack
 
-People é uma plataforma inovadora desenvolvida com Node.js e Next.js, que tem como missão conectar corações generosos a quem mais precisa. O sistema permite o cadastro de causas carentes, tornando-as visíveis para doadores em potencial, facilitando a contribuição e o apoio a essas causas.
+Uma plataforma inovadora desenvolvida com Node.js e Next.js, que tem como missão conectar corações generosos a quem mais precisa. O sistema permite o cadastro de causas carentes, tornando-as visíveis para doadores em potencial, facilitando a contribuição e o apoio a essas causas.
 ## Stack utilizada
 
 *Front-end:* React, Typescript, NextJS, TailwindCSS, ShadcnUI
